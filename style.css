@@ -1,0 +1,333 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #124170, #1C5478, #67C090);    
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh; /* Memastikan background penuh ke bawah jika konten memanjang */
+}
+
+/* LoginNRegist Style */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Menggunakan min-height agar lebih fleksibel dibanding height */
+}
+
+.container img {
+    width: 250px;
+    display: block;
+    margin-bottom: 60px; /* Dikurangi sedikit dari 100px agar form tidak terlalu turun ke bawah */
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Menggabungkan style Box Form Login & Register */
+.form-login, .form-regist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Membuat konten form berada di tengah kotak */
+    background-color: white;
+    width: 50%;
+    min-height: 50vh; /* Menggunakan min-height berbasis viewport agar konsisten */
+    border-radius: 30px;
+    padding: 30px; /* Menambah padding agar elemen di dalamnya tidak mepet ke pinggir kotak */
+    box-sizing: border-box; /* Memastikan padding tidak merusak ukuran lebar 50% */
+}
+
+/* Menyembunyikan form registrasi di awal menggunakan ID */
+#registForm {
+    display: none; /* Tetap sembunyi di awal */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Menggabungkan style Input untuk kedua form */
+.form-login input, .form-regist input {
+    width: 296px;
+    padding: 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    font-family: 'Poppins', sans-serif; /* Memastikan font input sama */
+}
+
+::placeholder {
+    color: #999;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Efek Focus Input */
+.form-login input:focus, .form-regist input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #124170;
+}
+
+/* Penataan Teks & Link */
+.lupa {
+    font-size: 0.9rem;
+    color: #000000;
+    margin: 5px 0;
+    text-align: end;
+    width: 100%; /* Disamakan dengan lebar input agar teks rata kanan sempurna */
+}
+
+.regist-link {
+    font-size: 0.9rem;
+    color: #000000;
+    margin: 10px 0 0 0;
+    text-align: start; /* Diubah ke center agar posisinya manis di bawah tombol */
+    width: 100%;
+}
+
+.form-login p a, .form-regist p a {
+    color: #124170;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-login p a:hover, .form-regist p a:hover {
+    text-decoration: underline;
+}
+
+/* Menggabungkan style Button */
+.form-login button, .form-regist button {
+    width: 100%; /* Diubah dari 100% ke 296px agar lebarnya sejajar dengan input */
+    padding: 15px;
+    margin: 15px 0 10px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #124170;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-login button:hover, .form-regist button:hover {
+    background-color: #1C5478; /* Berubah sedikit terang saat diarahkan kursor */
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .form-login, .form-regist {
+        width: 90%; /* Lebar form menyesuaikan dengan layar */
+        min-height: auto; /* Menghilangkan min-height untuk fleksibilitas */
+        padding: 20px; /* Mengurangi padding untuk layar kecil */
+    }
+
+    .container img {
+        width: 200px; /* Mengurangi ukuran logo untuk layar kecil */
+        margin-bottom: 40px; /* Mengurangi margin bawah untuk layar kecil */
+    }
+}
+
+/* hompage style */
+/* --- NAVBAR (Sesuai Gambar: Bersih & Transparan) --- */
+/* --- NAVBAR REMINDER --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.logo {
+    width: 90px;
+    height: auto;
+    transition: all 0.4s ease; 
+}
+
+.navbar.shrunk {
+    padding: 0.6rem 4rem; /* Tinggi navbar berkurang karena padding mengecil */
+    background-color: transparent; /* Warnanya dibuat sedikit lebih gelap/pekat saat melayang */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Menambah sedikit bayangan di bawah navbar */
+}
+.navbar.shrunk .logo {
+    width: 70px; /* Ukuran logo mengecil dari 120px ke 90px */
+}
+
+.logo {
+    width: 140px; /* Ukuran logo disesuaikan */
+    height: auto;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 3.5rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* --- LAYOUT UTAMA (Flex Kiri-Kanan) --- */
+/* --- LAYOUT WRAPPER --- */
+.main-content {
+    width: 100%;
+}
+
+/* --- SECTION HOME (Layout Kiri-Kanan Anda yang Lama) --- */
+#home, #about {
+    height: 100vh; /* Memaksa setiap section berukuran pas satu layar penuh */
+    width: 100%;
+    box-sizing: border-box;
+}
+/* --- SECTION 1: HOME (Gradasi Normal: Atas ke Bawah) --- */
+#home {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 6rem;
+    /* Warna 1: #124170 (Atas) -> Warna 3: #67C090 (Bawah) */
+    background: linear-gradient(to bottom, #124170, #1C5478, #67C090);
+}
+
+.main-image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.main-image img {
+    max-height: 80vh;
+    width: auto;
+    display: block;
+}
+
+.main-text {
+    flex: 1;
+    color: white;
+    padding-bottom: 15vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 2rem;
+}
+
+.main-text h1 {
+    font-size: 3.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.main-text p {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 40px 0;
+    max-width: 500px;
+}
+
+/* --- BUTTON ANDA --- */
+.btn {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 10px 14px 10px 28px;
+    border-radius: 50px;
+    gap: 20px;
+}
+
+.btn .arrow {
+    background-color: black;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- SECTION 2: ABOUT (Persis Seperti Gambar) --- */
+#about {
+    height: 100vh; /* Satu layar penuh */
+    width: 100%;
+    display: flex;
+    align-items: center; /* Membuat konten di dalamnya rata tengah secara vertikal */
+    justify-content: center;
+    padding: 0 6rem; /* Jarak aman pinggir kiri-kanan sesuai halaman home */
+    box-sizing: border-box;
+    
+    /* Gradasi Terbalik: Hijau di atas, Biru Tua di bawah */
+    background: linear-gradient(to top, #124170, #1C5478, #67C090);
+}
+
+/* Pembungkus Konten Kontainer */
+.about-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px; /* Membatasi lebar maksimal keseluruhan konten agar rapi */
+    align-items: center;
+    justify-content: space-between;
+    gap: 300px; /* Jarak pemisah yang lebar antara teks kiri dan kanan */
+}
+
+/* Bagian Judul Kiri */
+.about-title {
+    flex: 1;
+}
+
+.about-title h2 {
+    color: white;
+    font-size: 7rem; /* Ukuran font super besar seperti di gambar */
+    font-weight: 800; /* Sangat tebal */
+    line-height: 0.9; /* Merapatkan jarak baris antara "About" dan "Us" */
+    margin: 0;
+    letter-spacing: -2px;
+}
+
+/* Bagian Deskripsi Kanan */
+.about-content {
+    flex: 1.5; /* Memberikan ruang sedikit lebih lebar untuk paragraf */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Jarak renggang antar paragraf */
+}
+
+.about-content p {
+    color: white;
+    font-size: 1.25rem; /* Ukuran teks yang pas dan mudah dibaca */
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400; /* Ketebalan font normal */
+    text-align: left; /* Rata kiri sesuai gambar referensi */
+    max-width: 550px; /* Membatasi agar baris kalimat tidak terlalu panjang menyamping */
+}
+
