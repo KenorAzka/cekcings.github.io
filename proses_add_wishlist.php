@@ -1,0 +1,54 @@
+<?php
+session_start();
+include 'koneksi.php';
+
+// Fungsi UUID v4 Kustom
+function generate_uuid()
+{
+    $data = random_bytes(16);
+    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_user = $_SESSION['user_id'];
+    $nama_barang = mysqli_real_escape_string($conn, $_POST['nama_barang']);
+    $target_harga = mysqli_real_escape_string($conn, $_POST['target_harga']);
+    $target_mingguan = mysqli_real_escape_string($conn, $_POST['target_mingguan']);
+
+    // Proses Upload File Gambar
+    $filename = $_FILES['foto']['name'];
+    $target_dir = "uploads/";
+
+    // Mengubah nama file agar unik agar tidak menimpa file lain di server
+    $file_extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $new_filename = time() . '_' . uniqid() . '.' . $file_extension;
+    $target_file = $target_dir . $new_filename;
+
+    // Pastikan direktori folder penampung foto sudah dibuat
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0755, true);
+    }
+
+    if (move_uploaded_file($_FILES['foto']['tmp_name'], $target_file)) {
+        // Generate kode unik ID Wishlist
+        $id_wishlist = generate_uuid();
+        $status = "In Progress"; // Default status Enum sesuai rancangan ERD database Anda
+
+        // Query Menyimpan Data Sesuai Struktur ERD Gambar
+        $query = "INSERT INTO wishlists (id_wishlist, id_user, nama_barang, target_harga, target_mingguan, foto, status) 
+                VALUES ('$id_wishlist', '$id_user', '$nama_barang', '$target_harga', '$target_mingguan', '$new_filename', '$status')";
+
+        if (mysqli_query($conn, $query)) {
+            echo "<script>
+                    alert('Wishlist Impian Berhasil Ditambahkan!');
+                    window.location.href = 'dashboard.php';
+                </script>";
+        } else {
+            echo "Error Database: " . mysqli_error($conn);
+        }
+    } else {
+        echo "<script>alert('Gagal mengunggah foto barang.'); window.history.back();</script>";
+    }
+}
