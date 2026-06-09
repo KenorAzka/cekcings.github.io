@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include 'proses/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: loginNregist.php");
@@ -280,7 +280,7 @@ $history_result = mysqli_query($conn, $query_history);
             <div class="action-right-box">
                 <a href="edit_wishlist.php?id=<?php echo $id_wishlist; ?>"><i class="fa-solid fa-pen"></i></a>
                 <span style="color: rgba(255,255,255,0.4); margin: 0 5px;">|</span>
-                <a href="proses_delete_wishlist.php?id=<?php echo $id_wishlist; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus wishlist impian ini?')"><i class="fa-solid fa-trash"></i></a>
+                <a href="proses/proses_delete_wishlist.php?id=<?php echo $id_wishlist; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus wishlist impian ini?')"><i class="fa-solid fa-trash"></i></a>
             </div>
         </div>
 
@@ -316,7 +316,7 @@ $history_result = mysqli_query($conn, $query_history);
 
                 <div class="transaction-form">
                     <h4>Catat Mutasi Tabungan</h4>
-                    <form action="proses_transaksi_saving.php" method="POST">
+                    <form action="proses/proses_transaksi_saving.php" method="POST">
                         <input type="hidden" name="id_wishlist" value="<?php echo $id_wishlist; ?>">
                         <div class="form-row">
                             <select name="jenis_mutasi" required>

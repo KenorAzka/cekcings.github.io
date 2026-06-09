@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+require_once __DIR__ . '/proses/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email    = mysqli_real_escape_string($conn, $_POST['email']);

@@ -43,7 +43,7 @@
 
         <div class="form-regist" id="registForm">
             <h1>Register</h1>
-            <form action="register.php" method="post">
+            <form action="proses/register.php" method="post">
                 <div class="isi_form">
                     <input type="text" name="username" id="regUsername" placeholder="Username" required>
                 </div>

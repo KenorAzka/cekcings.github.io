@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+require_once __DIR__ . '/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_wishlist = mysqli_real_escape_string($conn, $_POST['id_wishlist']);
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $filename = $_FILES['foto']['name'];
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         $new_name = time() . '_' . uniqid() . '.' . $ext;
-        move_uploaded_file($_FILES['foto']['tmp_name'], "uploads/" . $new_name);
+        move_uploaded_file($_FILES['foto']['tmp_name'], __DIR__ . "/../uploads/" . $new_name);
 
         $query = "UPDATE wishlists SET nama_barang='$nama', target_harga='$harga', target_mingguan='$mingguan', foto='$new_name' WHERE id_wishlist='$id_wishlist'";
     } else {
@@ -21,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (mysqli_query($conn, $query)) {
-        header("Location: detail_wishlist.php?id=" . $id_wishlist);
+        header("Location: ../detail_wishlist.php?id=" . $id_wishlist);
+        exit();
+    } else {
+        echo "Error: " . mysqli_error($conn);
     }
 }

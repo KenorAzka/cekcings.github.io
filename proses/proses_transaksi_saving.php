@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include __DIR__ . '/koneksi.php';
 
 function generate_uuid()
 {
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_query($conn, "UPDATE wishlists SET status = 'In Progress' WHERE id_wishlist = '$id_wishlist'");
         }
 
-        echo "<script>alert('Catatan keuangan berhasil disimpan!'); window.location.href='detail_wishlist.php?id=$id_wishlist';</script>";
+        echo "<script>alert('Catatan keuangan berhasil disimpan!'); window.location.href='../detail_wishlist.php?id=$id_wishlist';</script>";
     } else {
         echo "Error: " . mysqli_error($conn);
     }

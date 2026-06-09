@@ -1,5 +1,5 @@
 <?php
-include 'koneksi.php';
+require_once __DIR__ . '/koneksi.php';
 
 // FUNGSI UNTUK MEMBUAT KODE UNIK (UUID v4)
 function generate_custom_id()
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($hasilCek) > 0) {
         echo "<script>
                 alert('Email sudah terdaftar!');
-                window.location.href = 'loginNregist.php';
+                window.location.href = '../loginNregist.php';
             </script>";
     } else {
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (mysqli_query($conn, $query)) {
             echo "<script>
                     alert('Registrasi Berhasil! Silakan Log In.');
-                    window.location.href = 'loginNregist.php'; 
+                    window.location.href = '../loginNregist.php';
                 </script>";
         } else {
             echo "Error: " . mysqli_error($conn);

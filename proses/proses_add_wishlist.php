@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include __DIR__ . '/koneksi.php';
 
 // Fungsi UUID v4 Kustom
 function generate_uuid()
@@ -17,9 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $target_harga = mysqli_real_escape_string($conn, $_POST['target_harga']);
     $target_mingguan = mysqli_real_escape_string($conn, $_POST['target_mingguan']);
 
+    // !!! PERBAIKAN DI SINI !!!
+    // Menangkap input tipe_alokasi dari form HTML (harian, mingguan, bulanan, tahunan)
+    $tipe_alokasi = mysqli_real_escape_string($conn, $_POST['tipe_alokasi']);
+
     // Proses Upload File Gambar
     $filename = $_FILES['foto']['name'];
-    $target_dir = "uploads/";
+    $target_dir = "../uploads/";
 
     // Mengubah nama file agar unik agar tidak menimpa file lain di server
     $file_extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -36,14 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_wishlist = generate_uuid();
         $status = "In Progress"; // Default status Enum sesuai rancangan ERD database Anda
 
-        // Query Menyimpan Data Sesuai Struktur ERD Gambar
-        $query = "INSERT INTO wishlists (id_wishlist, id_user, nama_barang, target_harga, target_mingguan, foto, status) 
-                VALUES ('$id_wishlist', '$id_user', '$nama_barang', '$target_harga', '$target_mingguan', '$new_filename', '$status')";
+        // !!! PERBAIKAN DI SINI !!!
+        // Menambahkan kolom tipe_alokasi dan nilainya '$tipe_alokasi' ke dalam query SQL
+        $query = "INSERT INTO wishlists (id_wishlist, id_user, nama_barang, target_harga, target_mingguan, foto, status, tipe_alokasi) 
+                VALUES ('$id_wishlist', '$id_user', '$nama_barang', '$target_harga', '$target_mingguan', '$new_filename', '$status', '$tipe_alokasi')";
 
         if (mysqli_query($conn, $query)) {
             echo "<script>
                     alert('Wishlist Impian Berhasil Ditambahkan!');
-                    window.location.href = 'dashboard.php';
+                    window.location.href = '../dashboard.php';
                 </script>";
         } else {
             echo "Error Database: " . mysqli_error($conn);

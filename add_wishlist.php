@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         * {
             margin: 0;
@@ -75,7 +76,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: none; /* Tersembunyi di awal sebelum diupload */
+            display: none;
         }
 
         .image-preview-frame i {
@@ -208,6 +209,7 @@
             .split-container {
                 flex-direction: column;
             }
+
             .preview-panel {
                 border-right: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -216,15 +218,15 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="split-container">
-        
+
         <div class="preview-panel">
             <div class="image-preview-frame" id="previewFrame">
                 <i class="fa-regular fa-image" id="placeholderIcon"></i>
                 <span class="preview-text" id="placeholderText">Belum ada foto dipilih</span>
-                
                 <img src="" id="liveImage" alt="Live Preview">
             </div>
         </div>
@@ -232,9 +234,9 @@
         <div class="form-panel">
             <h2>Add New Wishlist</h2>
             <p>Masukkan target impian Anda dan mulai menabung!</p>
-            
-            <form action="proses_add_wishlist.php" method="POST" enctype="multipart/form-data">
-                
+
+            <form action="proses/proses_add_wishlist.php" method="POST" enctype="multipart/form-data">
+
                 <div class="input-group">
                     <label>Nama Barang / Impian</label>
                     <div class="input-wrapper">
@@ -252,10 +254,16 @@
                 </div>
 
                 <div class="input-group">
-                    <label>Target Alokasi Mingguan (Rp)</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-wallet"></i>
-                        <input type="number" name="target_mingguan" placeholder="Contoh: 250000" required>
+                    <label for="target_mingguan">Target Alokasi Tabungan</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" name="target_mingguan" id="target_mingguan" placeholder="Contoh: 250000" required style="flex: 2; padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); outline: none; font-size: 0.95rem; color: #333; background: white;">
+
+                        <select name="tipe_alokasi" id="tipe_alokasi" required style="flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); font-family: 'Poppins'; background: white; color: #333; font-weight: 500; outline: none;">
+                            <option value="harian">Per Hari</option>
+                            <option value="mingguan" selected>Per Minggu</option>
+                            <option value="bulanan">Per Bulan</option>
+                            <option value="tahunan">Per Tahun</option>
+                        </select>
                     </div>
                 </div>
 
@@ -287,26 +295,16 @@
             if (file) {
                 const reader = new FileReader();
 
-                // Saat file selesai dibaca oleh sistem browser
                 reader.addEventListener('load', function() {
-                    // 1. Ganti atribut src tag img dengan data url gambar baru
                     liveImage.setAttribute('src', this.result);
-                    
-                    // 2. Tampilkan element gambar
                     liveImage.style.display = 'block';
-                    
-                    // 3. Sembunyikan icon & teks panduan awal
                     placeholderIcon.style.display = 'none';
                     placeholderText.style.display = 'none';
-                    
-                    // 4. Ubah border bingkai menjadi garis solid agar rapi
                     previewFrame.style.border = 'none';
                 });
 
-                // Membaca file gambar sebagai Data URL
                 reader.readAsDataURL(file);
             } else {
-                // Jika user membatalkan pilihan file, kembalikan ke kondisi awal
                 liveImage.style.display = 'none';
                 placeholderIcon.style.display = 'block';
                 placeholderText.style.display = 'block';
@@ -315,4 +313,5 @@
         });
     </script>
 </body>
+
 </html>

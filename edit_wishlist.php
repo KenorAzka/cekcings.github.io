@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'koneksi.php';
+include 'proses/koneksi.php';
 
 // Proteksi Halaman
 if (!isset($_SESSION['user_id'])) {
@@ -78,7 +78,7 @@ if (!$d) {
         .image-preview-frame {
             width: 260px;
             height: 260px;
-            background-color: white; /* Mengikuti frame putih di dashboard */
+            background-color: white;
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -115,7 +115,7 @@ if (!$d) {
         .input-group label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: rgba(255, 255, 255, 0.8); }
 
         .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i { position: absolute; left: 15px; color: #1C5478; font-size: 1rem; }
+        .input-wrapper i { position: absolute; left: 15px; color: #1C5478; font-size: 1rem; z-index: 2; }
         .input-wrapper input {
             width: 100%;
             padding: 12px 15px 12px 45px;
@@ -164,7 +164,7 @@ if (!$d) {
             <h2>Ubah Impian</h2>
             <p>Perbarui detail target tabungan wishlist Anda.</p>
             
-            <form action="proses_edit_wishlist.php" method="POST" enctype="multipart/form-data">
+            <form action="proses/proses_edit_wishlist.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id_wishlist" value="<?php echo $d['id_wishlist']; ?>">
                 
                 <div class="input-group">
@@ -184,10 +184,19 @@ if (!$d) {
                 </div>
 
                 <div class="input-group">
-                    <label>Alokasi Mingguan (Rp)</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-wallet"></i>
-                        <input type="number" name="target_mingguan" value="<?php echo (int)$d['target_mingguan']; ?>" required>
+                    <label for="target_mingguan">Target Alokasi Tabungan</label>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="input-wrapper" style="flex: 2;">
+                            <i class="fa-solid fa-wallet"></i>
+                            <input type="number" name="target_mingguan" id="target_mingguan" value="<?php echo (int)$d['target_mingguan']; ?>" required>
+                        </div>
+
+                        <select name="tipe_alokasi" id="tipe_alokasi" required style="flex: 1; padding: 12px; border-radius: 12px; border: none; font-family: 'Poppins'; background: white; color: #333; font-weight: 500; outline: none;">
+                            <option value="harian" <?php echo ($d['tipe_alokasi'] == 'harian') ? 'selected' : ''; ?>>Per Hari</option>
+                            <option value="mingguan" <?php echo ($d['tipe_alokasi'] == 'mingguan') ? 'selected' : ''; ?>>Per Minggu</option>
+                            <option value="bulanan" <?php echo ($d['tipe_alokasi'] == 'bulanan') ? 'selected' : ''; ?>>Per Bulan</option>
+                            <option value="tahunan" <?php echo ($d['tipe_alokasi'] == 'tahunan') ? 'selected' : ''; ?>>Per Tahun</option>
+                        </select>
                     </div>
                 </div>
 
@@ -208,7 +217,7 @@ if (!$d) {
         const fileInput = document.getElementById('fileInput');
         const liveImage = document.getElementById('liveImage');
         const previewStatus = document.getElementById('previewStatus');
-        const originalImage = liveImage.src; // Menyimpan path gambar asli
+        const originalImage = liveImage.src; 
 
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
@@ -218,12 +227,11 @@ if (!$d) {
                 reader.addEventListener('load', function() {
                     liveImage.setAttribute('src', this.result);
                     previewStatus.innerHTML = "Pratinjau foto baru ✨";
-                    previewStatus.style.color = "#67C090"; // Warna hijau agar user sadar ada perubahan
+                    previewStatus.style.color = "#67C090"; 
                     previewStatus.style.opacity = "1";
                 });
                 reader.readAsDataURL(file);
             } else {
-                // Jika user membatalkan pilihan file, kembalikan ke foto database semula
                 liveImage.setAttribute('src', originalImage);
                 previewStatus.innerHTML = "Foto saat ini";
                 previewStatus.style.color = "white";

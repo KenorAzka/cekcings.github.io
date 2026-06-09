@@ -6,5 +6,5 @@ session_unset();
 session_destroy();
 
 // Melempar user kembali ke halaman utama/login setelah sukses logout
-header("Location: loginNregist.php");
+header("Location: ../loginNregist.php");
 exit();
