@@ -97,15 +97,13 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CekC!ng</title>
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.0">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-        /* CSS pengendali SPA toggle */
         .content-section {
             display: none;
         }
-
         .content-section.section-active {
             display: block;
         }

@@ -135,8 +135,6 @@ h1 {
 }
 
 /* hompage style */
-/* --- NAVBAR (Sesuai Gambar: Bersih & Transparan) --- */
-/* --- NAVBAR REMINDER --- */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -182,11 +180,274 @@ h1 {
     margin-left: 3.5rem;
 }
 
-.nav-links a {
-    color: white;
+.nav-links li a {
+    color: #ffffff;
     text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+    color: #67C090;
+    transition: all 0.5s ease;
+}
+
+/* ==========================================================================
+   SECTION CONTACT & FEEDBACK STYLE (100vh)
+   ========================================================================== */
+
+/* Reset Kontainer Utama agar konsisten 100vh */
+#contact, #feedback {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 10%; /* 80px menjaga jarak dari navbar */
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ----------------------------------
+   1. CONTACT SECTION STYLE
+   ---------------------------------- */
+#contact {
+    background: linear-gradient(180deg, #124170, #1C5478); /* Senada dengan tema dashboard */
+    color: #ffffff;
+}
+
+.contact-container {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-info h2 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.info-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.info-item .icon {
+    font-size: 1.5rem;
+}
+
+.info-item p, .info-item a {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0;
+}
+
+.contact-box-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.contact-box {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(18, 65, 112, 0.15);
+    width: 100%;
+    max-width: 450px;
+    color: #000000;
+}
+
+.contact-box h3 {
+    font-size: 1.5rem;
     font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+}
+
+.box-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #67C090; /* Warna hijau khas CekC!ng */
+}
+
+.box-item p {
     font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 25px;
+}
+
+.contact-btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background-color: #67C090;
+    color: rgb(0, 0, 0);
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.contact-btn:hover {
+    background-color: #55b07f;
+    transform: translateY(-2px);
+}
+
+/* ----------------------------------
+   2. FEEDBACK SECTION STYLE
+   ---------------------------------- */
+#feedback {
+    background: linear-gradient(180deg, #1C5478, #124170); /* Senada dengan tema dashboard */
+    color: #ffffff;
+}
+
+.feedback-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1100px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+}
+
+.feedback-header {
+    flex: 1;
+}
+
+.feedback-header h2 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.feedback-header p {
+    font-size: 1rem;
+    opacity: 0.8;
+    line-height: 1.6;
+}
+
+.feedback-card {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    color: #124170;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-group textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 2px solid #e1e5eb;
+    border-radius: 12px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #333333;
+    resize: none;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group textarea:focus {
+    border-color: #124170;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #67C090;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #55b07f;
+    transform: translateY(-2px);
+}
+
+/* ----------------------------------
+   3. RESPONSIVE DESIGN (MOBILE FRIENDLY)
+   ---------------------------------- */
+@media (max-width: 768px) {
+    #contact, #feedback {
+        padding: 100px 5% 50px 5%;
+        height: auto;
+        min-height: auto;
+    }
+
+    .contact-container, .feedback-wrapper {
+        flex-direction: column;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .contact-info h2, .feedback-header h2 {
+        font-size: 2.5rem;
+    }
+
+    .info-links {
+        align-items: center;
+    }
+
+    .contact-box-wrapper, .feedback-card {
+        justify-content: center;
+        max-width: 100%;
+    }
 }
 
 /* --- LAYOUT UTAMA (Flex Kiri-Kanan) --- */
