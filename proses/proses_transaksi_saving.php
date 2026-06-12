@@ -14,8 +14,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_user = $_SESSION['user_id'];
     $id_wishlist = mysqli_real_escape_string($conn, $_POST['id_wishlist']);
     $jenis = $_POST['jenis_mutasi']; // Pemasukan atau Pengeluaran
-    $nominal = (float)$_POST['jumlah'];
     $keterangan = mysqli_real_escape_string($conn, $_POST['keterangan']);
+
+    // --- PROSES PEMBERSIHAN FORMAT RUPIAH ---
+    // Ambil string nominal mentah dari input (Contoh: "5.000.000" atau "50.000")
+    $jumlah_raw = $_POST['jumlah'];
+
+    // Hapus karakter titik (.) pemisah ribuan agar menjadi angka murni ("5000000")
+    $jumlah_clean = str_replace('.', '', $jumlah_raw);
+
+    // Ubah koma (,) menjadi titik (.) jika user tidak sengaja memasukkan desimal sen
+    $jumlah_clean = str_replace(',', '.', $jumlah_clean);
+
+    // Konversi hasil pembersihan menjadi tipe data float untuk kalkulasi database
+    $nominal = (float)$jumlah_clean;
+    // ----------------------------------------
 
     // Jika pengeluaran/tarik, ubah nilai nominal menjadi minus (-) untuk hitungan SUM database
     if ($jenis == "Pengeluaran") {

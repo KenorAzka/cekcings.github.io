@@ -249,14 +249,14 @@
                     <label>Target Harga Total (Rp)</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-money-bill-wave"></i>
-                        <input type="number" name="target_harga" placeholder="Contoh: 12500000" required>
+                        <input type="text" id="target_harga" name="target_harga" placeholder="Contoh: 12.500.000" oninput="formatRupiah(this)" required>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label for="target_mingguan">Target Alokasi Tabungan</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="number" name="target_mingguan" id="target_mingguan" placeholder="Contoh: 250000" required style="flex: 2; padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); outline: none; font-size: 0.95rem; color: #333; background: white;">
+                        <input type="text" name="target_mingguan" id="target_mingguan" placeholder="Contoh: 250.000" oninput="formatRupiah(this)" required style="flex: 2; padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); outline: none; font-size: 0.95rem; color: #333; background: white;">
 
                         <select name="tipe_alokasi" id="tipe_alokasi" required style="flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); font-family: 'Poppins'; background: white; color: #333; font-weight: 500; outline: none;">
                             <option value="harian">Per Hari</option>
@@ -311,6 +311,27 @@
                 previewFrame.style.border = '2px dashed rgba(255, 255, 255, 0.4)';
             }
         });
+
+        function formatRupiah(element) {
+            // Ambil value input, hapus semua karakter selain angka
+            let value = element.value.replace(/[^,\d]/g, '').toString();
+            let split = value.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // Jika ada ribuan, tambahkan titik sebagai pemisah
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            // Gabungkan kembali jika ada koma desimal
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+            // Kembalikan hasil format ke dalam input text
+            element.value = rupiah;
+        }
     </script>
 </body>
 

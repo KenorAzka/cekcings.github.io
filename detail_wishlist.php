@@ -24,14 +24,32 @@ if (!$data) {
 
 // Perhitungan Matematis Keuangan
 $target_harga    = (float)$data['target_harga'];
-$target_mingguan = (float)$data['target_mingguan'];
+$target_mingguan = (float)$data['target_mingguan']; // Nominal periodik alokasi tabungan
 $collected       = (float)$data['total_terkumpul'];
 $lack            = $target_harga - $collected;
 if ($lack < 0) $lack = 0;
 
 $progress_percent = ($target_harga > 0) ? round(($collected / $target_harga) * 100) : 0;
 if ($progress_percent > 100) $progress_percent = 100;
-$weeks_left = ($target_mingguan > 0) ? ceil($lack / $target_mingguan) : 0;
+
+// Perhitungan sisa periode waktu berdasarkan target alokasi
+$time_left = ($target_mingguan > 0) ? ceil($lack / $target_mingguan) : 0;
+
+// Penerjemah Tipe Alokasi dari Database untuk Label Teks
+$tipe = $data['tipe_alokasi'];
+if ($tipe == 'harian') {
+    $label_period = 'Per Day';
+    $label_time   = ' More Days';
+} elseif ($tipe == 'bulanan') {
+    $label_period = 'Per Month';
+    $label_time   = ' More Months';
+} elseif ($tipe == 'tahunan') {
+    $label_period = 'Per Year';
+    $label_time   = ' More Years';
+} else {
+    $label_period = 'Per Week';
+    $label_time   = ' More Weeks';
+}
 
 // 2. Ambil riwayat mutasi tabungan dari tabel saving_progress
 $query_history = "SELECT * FROM saving_progress WHERE id_wishlist = '$id_wishlist' ORDER BY tanggal_setor DESC";
@@ -75,6 +93,7 @@ $history_result = mysqli_query($conn, $query_history);
             align-items: center;
             margin-bottom: 20px;
         }
+
         .top-action-bar h2 {
             color: black;
             text-align: center;
@@ -130,7 +149,8 @@ $history_result = mysqli_query($conn, $query_history);
             background: #174A7C;
             border-radius: 24px;
             padding: 0;
-            overflow: hidden;;
+            overflow: hidden;
+            ;
             display: flex;
             flex-direction: column;
             color: white;
@@ -296,7 +316,10 @@ $history_result = mysqli_query($conn, $query_history);
                             <div class="progress-bar-fill" style="width: <?php echo $progress_percent; ?>%; height:100%; background: white;"></div>
                         </div>
                         <span style="position: absolute; right: 15px; top: 25px; font-weight: 700; font-size: 1.1rem;"><?php echo $progress_percent; ?>%</span>
-                        <span style="font-size: 0.8rem; display:block; margin-top: 8px; color: rgba(255,255,255,0.8);"><?php echo ($progress_percent >= 100) ? 'Goal Terpenuhi!' : $weeks_left . ' More Weeks'; ?></span>
+
+                        <span style="font-size: 0.8rem; display:block; margin-top: 8px; color: rgba(255,255,255,0.8);">
+                            <?php echo ($progress_percent >= 100) ? 'Goal Terpenuhi!' : $time_left . $label_time; ?>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -306,7 +329,10 @@ $history_result = mysqli_query($conn, $query_history);
                 <div class="info-strip">
                     <div>
                         <div style="font-size: 1.2rem; font-weight:700;">Rp<?php echo number_format($target_harga, 0, ',', '.'); ?></div>
-                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">Rp<?php echo number_format($target_mingguan, 0, ',', '.'); ?> Per Week</div>
+
+                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.6);">
+                            Rp<?php echo number_format($target_mingguan, 0, ',', '.'); ?> <?php echo $label_period; ?>
+                        </div>
                     </div>
                     <div style="font-size: 0.8rem; text-align: right; color: rgba(255,255,255,0.8);">
                         Date Created: <?php echo date('d/m/Y', strtotime($data['created_at'])); ?><br>
@@ -323,8 +349,7 @@ $history_result = mysqli_query($conn, $query_history);
                                 <option value="Pemasukan">Setor (Masuk)</option>
                                 <option value="Pengeluaran">Tarik (Keluar)</option>
                             </select>
-                            <input type="number" name="jumlah" placeholder="Masukkan Nominal Uang (Rp)" required>
-                            <input type="text" name="keterangan" placeholder="Keterangan opsional">
+                            <input type="text" id="input_jumlah" name="jumlah" placeholder="Masukkan Nominal Uang (Rp)" oninput="formatRupiah(this)" required> <input type="text" name="keterangan" placeholder="Keterangan opsional">
                             <button type="submit" class="btn-submit-trans">Simpan</button>
                         </div>
                     </form>
@@ -370,6 +395,29 @@ $history_result = mysqli_query($conn, $query_history);
             </div>
         </div>
     </div>
+
+    <script>
+        function formatRupiah(element) {
+            // Ambil value input, hapus semua karakter selain angka
+            let value = element.value.replace(/[^,\d]/g, '').toString();
+            let split = value.split(',');
+            let sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // Jika ada ribuan, tambahkan titik sebagai pemisah
+            if (ribuan) {
+                let separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            // Gabungkan kembali jika ada koma desimal
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+            // Masukkan kembali hasil format ke dalam input text
+            element.value = rupiah;
+        }
+    </script>
 
 </body>
 

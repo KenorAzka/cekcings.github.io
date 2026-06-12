@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
-    <link rel="stylesheet" href="css/style.css?v=1.0">
+    <link rel="stylesheet" href="css/style.css?v=1.1">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
     </style>
@@ -99,7 +99,20 @@
                 </div>
             </div>
         </section>
+        <footer class="site-footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <img src="img/logo.png" alt="Logo CekC!ng" class="footer-logo">
+                    <p>Tracking tabungan wishlistmu dengan mudah dan teratur.</p>
+                </div>
 
+                <div class="footer-right">
+                    <p class="footer-copyright">
+                        &copy; 2026 CekC!ng App &mdash; All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
     </main>
 
     <script>

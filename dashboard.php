@@ -9,8 +9,14 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $id_user = $_SESSION['user_id'];
-$username = $_SESSION['username'];
-$email = $_SESSION['email'];
+
+$query_user = mysqli_query($conn, "SELECT username, email, foto_profil FROM users WHERE id_user = '$id_user'");
+$data_user = mysqli_fetch_assoc($query_user);
+
+// Definisikan variabel dari database, bukan dari $_SESSION lagi
+$username = $data_user['username'];
+$email = $data_user['email'];
+$foto_profil = $data_user['foto_profil'];
 
 // Query mengambil seluruh wishlist milik user beserta akumulasi tabungannya
 $query_wishlist = "SELECT w.*, COALESCE(SUM(s.jumlah_tabungan), 0) AS total_terkumpul 
@@ -97,13 +103,14 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CekC!ng</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=1.0">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.3">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         .content-section {
             display: none;
         }
+
         .content-section.section-active {
             display: block;
         }
@@ -135,7 +142,7 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                     </li>
 
                     <li class="menu-item" data-section="pengingat-section">
-                        <a href="#"><i class="fa-solid fa-bell"></i> Pengingat</a>
+                        <a href="#"><i class="fa-solid fa-bell"></i> Reminder</a>
                     </li>
 
                     <li class="menu-item" data-section="feedback-section">
@@ -146,16 +153,25 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
 
             <div class="sidebar-profile">
                 <div class="profile-box" id="profileToggle">
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+
+                    <div class="avatar">
+                        <?php if (!empty($foto_profil) && file_exists($foto_profil)): ?>
+                            <img src="<?php echo htmlspecialchars($foto_profil); ?>?t=<?php echo time(); ?>" alt="User Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;">
+                        <?php else: ?>
+                            <i class="fa-solid fa-user"></i>
+                        <?php endif; ?>
+                    </div>
+
                     <div class="profile-info">
                         <span class="profile-name"><?php echo htmlspecialchars($username); ?></span>
                         <span class="profile-email"><?php echo htmlspecialchars($email); ?></span>
                     </div>
                     <i class="fa-solid fa-chevron-down arrow-down"></i>
                 </div>
+
                 <div class="profile-dropdown" id="profileDropdown">
                     <ul>
-                        <li><a href="#"><i class="fa-regular fa-user"></i> Lihat Profil</a></li>
+                        <li><a href="profile.php"><i class="fa-regular fa-user"></i> Lihat Profil</a></li>
                         <li><a href="proses/logout.php" class="logout-link"><i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar / Logout</a></li>
                     </ul>
                 </div>
@@ -165,7 +181,7 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
         <main class="main-dashboard">
             <header class="dashboard-header">
                 <div class="welcome-text">
-                    <h1>Halo, <?php echo htmlspecialchars($username); ?>! 👋</h1>
+                    <h4>Halo, <?php echo htmlspecialchars($username); ?>! 👋</h4>
                     <p>Kelola Tabunganmu & Wujudkan impianmu bersama CekC!ng</p>
                 </div>
 
@@ -464,11 +480,19 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                                         <span class="percent-badge"><?php echo $progress_percent; ?>%</span>
                                     </div>
                                 </div>
-                                <div class="card-bottom">
-                                    <div class="price-info">
-                                        <span class="total-price">Rp<?php echo number_format($target_harga, 0, ',', '.'); ?></span>
-                                        <span class="weekly-target">Rp<?php echo number_format($target_mingguan, 0, ',', '.'); ?> Per Week</span>
-                                    </div>
+                                <div class="price-info">
+                                    <span class="total-price">Rp<?php echo number_format($target_harga, 0, ',', '.'); ?></span>
+
+                                    <span class="weekly-target">
+                                        Rp<?php echo number_format($target_mingguan, 0, ',', '.'); ?>
+                                        <?php
+                                        $tipe = $row['tipe_alokasi'];
+                                        if ($tipe == 'harian') echo 'Per Day';
+                                        elseif ($tipe == 'mingguan') echo 'Per Week';
+                                        elseif ($tipe == 'bulanan') echo 'Per Month';
+                                        elseif ($tipe == 'tahunan') echo 'Per Year';
+                                        ?>
+                                    </span>
                                 </div>
                             </div>
                         </a>
@@ -512,19 +536,19 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                                     <div class="item-detail">
                                         <h3><?php echo htmlspecialchars($row['nama_barang']); ?></h3>
                                         <div class="progress-container">
-                                            <span class="progress-title" style="color: #00ff78;">Completed</span>
+                                            <span class="progress-title" style="color: #67C090;">Completed</span>
                                             <div class="progress-bar-bg">
-                                                <div class="progress-bar-fill" style="width: 100%; background: #00ff78;"></div>
+                                                <div class="progress-bar-fill" style="width: 100%; background: #67C090;"></div>
                                             </div>
-                                            <span class="progress-caption" style="color: #00ff78; font-weight: 600;">Goal Achieved!</span>
+                                            <span class="progress-caption" style="color: #67C090; font-weight: 600;">Goal Achieved!</span>
                                         </div>
-                                        <span class="percent-badge" style="background: #00ff78; color: #111;">100%</span>
+                                        <span class="percent-badge" style="background: #67C090; color: #111;">100%</span>
                                     </div>
                                 </div>
                                 <div class="card-bottom">
                                     <div class="price-info">
                                         <span class="total-price">Rp<?php echo number_format($target_harga, 0, ',', '.'); ?></span>
-                                        <span class="weekly-target" style="color: #00ff78;">Target Terpenuhi!</span>
+                                        <span class="weekly-target" style="color: #67C090;">Target Terpenuhi!</span>
                                     </div>
                                 </div>
                             </div>
@@ -539,23 +563,25 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
             </section>
 
             <section id="pengingat-section" class="dashboard-content content-section">
-                <div class="wishlist-header">
-                    <h2>Pengingat Menabung</h2>
+                <div class="reminder-prof-header">
+                    <div class="header-left">
+                        <h2>Pengingat Menabung</h2>
+                        <p class="header-subtitle">
+                            Kelola jadwal notifikasi rutin agar target wishlist impianmu selesai tepat waktu.
+                        </p>
+                    </div>
                     <a href="add_reminder.php" class="add-savings-btn" style="display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-plus"></i> Atur Pengingat Baru
+                        <i class="fa-solid fa-plus"></i> Add Reminder
                     </a>
                 </div>
-                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 5px; margin-bottom: 25px; font-size: 0.9rem;">
-                    Kelola jadwal notifikasi rutin agar target wishlist impianmu selesai tepat waktu.
-                </p>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                <div class="reminder-prof-grid">
                     <?php
                     // Ambil semua daftar pengingat milik user saat ini
                     $query_all_reminders = "SELECT r.*, w.nama_barang FROM reminders r 
-                                JOIN wishlists w ON r.id_wishlist = w.id_wishlist 
-                                WHERE w.id_user = '$id_user' 
-                                ORDER BY r.id_reminder DESC";
+                    JOIN wishlists w ON r.id_wishlist = w.id_wishlist 
+                    WHERE w.id_user = '$id_user' 
+                    ORDER BY r.id_reminder DESC";
                     $tampil_all = mysqli_query($conn, $query_all_reminders);
 
                     if ($tampil_all && mysqli_num_rows($tampil_all) > 0) {
@@ -563,38 +589,51 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                             $status_aktif = ((int)$rem['is_active'] === 1);
                             $formatted_jam = date('H:i', strtotime($rem['jam']));
                     ?>
-                            <div style="background: white; border-radius: 15px; padding: 20px; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; height: 140px; opacity: <?php echo $status_aktif ? '1' : '0.7'; ?>;">
-                                <div style="display: flex; justify-content: space-between; align-items: start;">
-                                    <div style="display: flex; gap: 15px; align-items: center;">
-                                        <div style="background: <?php echo $status_aktif ? '#e2f1e7' : '#f1f5f9'; ?>; width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fa-solid <?php echo $status_aktif ? 'fa-bell' : 'fa-bell-slash'; ?>" style="color: <?php echo $status_aktif ? '#2e6f40' : '#94a3b8'; ?>; font-size: 1.2rem;"></i>
-                                        </div>
-                                        <div>
-                                            <h4 style="margin: 0; font-size: 0.95rem; font-weight: 600; color: #1e293b;">Menabung: <?php echo htmlspecialchars($rem['nama_barang']); ?></h4>
-                                            <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #64748b;"><i class="fa-regular fa-clock"></i> Setiap <?php echo htmlspecialchars($rem['hari']); ?>, <?php echo $formatted_jam; ?> WIB</p>
-                                        </div>
+                            <div class="prof-reminder-card <?php echo $status_aktif ? '' : 'is-disabled'; ?>">
+
+                                <div class="prof-card-top">
+                                    <div class="prof-icon-wrapper">
+                                        <i class="fa-solid fa-bell"></i>
                                     </div>
-                                    <span class="badge-aktif" style="background: <?php echo $status_aktif ? '#e2f1e7' : '#f1f5f9'; ?>; color: <?php echo $status_aktif ? '#2e6f40' : '#94a3b8'; ?>; font-size: 0.7rem;">
+                                    <div class="prof-badge-status <?php echo $status_aktif ? 'status-active' : 'status-inactive'; ?>">
+                                        <span class="prof-badge-dot"></span>
                                         <?php echo $status_aktif ? 'Aktif' : 'Nonaktif'; ?>
-                                    </span>
+                                    </div>
                                 </div>
 
-                                <div style="border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-size: 0.75rem; color: #94a3b8;">Sistem Notifikasi</span>
-                                    <div style="display: flex; gap: 15px;">
-                                        <a href="proses/toggle_reminder.php?id=<?php echo $rem['id_reminder']; ?>" style="color: <?php echo $status_aktif ? '#9b1c1c' : '#2e6f40'; ?>; text-decoration: none; font-size: 0.85rem;" title="<?php echo $status_aktif ? 'Matikan' : 'Aktifkan'; ?>">
-                                            <i class="fa-solid fa-power-off"></i>
-                                        </a>
-                                        <a href="proses/hapus_reminder.php?id=<?php echo $rem['id_reminder']; ?>" style="color: #94a3b8; text-decoration: none; font-size: 0.85rem;" onclick="return confirm('Hapus pengingat ini?')" title="Hapus">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </a>
+                                <div class="prof-card-body">
+                                    <h4 class="prof-reminder-title"><?php echo htmlspecialchars($rem['nama_barang']); ?></h4>
+                                    <div class="prof-meta-row">
+                                        <div class="prof-meta-item">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                            <span>Setiap <?php echo htmlspecialchars($rem['hari']); ?></span>
+                                        </div>
+                                        <div class="prof-meta-item">
+                                            <i class="fa-solid fa-clock"></i>
+                                            <span>Jam <?php echo $formatted_jam; ?> WIB</span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="prof-card-actions">
+                                    <a href="proses/toggle_reminder.php?id=<?php echo $rem['id_reminder']; ?>" class="prof-btn-action prof-btn-toggle">
+                                        <i class="fa-solid fa-power-off"></i>
+                                        <span><?php echo $status_aktif ? 'Matikan' : 'Aktifkan'; ?></span>
+                                    </a>
+                                    <a href="proses/hapus_reminder.php?id=<?php echo $rem['id_reminder']; ?>" onclick="return confirm('Hapus pengingat ini secara permanen?')" class="prof-btn-action prof-btn-delete">
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </a>
+                                </div>
+
                             </div>
                     <?php
                         }
                     } else {
-                        echo "<p style='color: white; font-size: 0.9rem; grid-column: 1/-1;'>Kamu belum membuat pengingat menabung apa pun.</p>";
+                        echo "<div class='prof-empty-state'>
+                <div class='prof-empty-icon'><i class='fa-regular fa-bell'></i></div>
+                <h5>Belum ada pengingat</h5>
+                <p>Jadwalkan notifikasi rutin untuk membantumu disiplin menabung.</p>
+            </div>";
                     }
                     ?>
                 </div>
@@ -624,7 +663,9 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     </div>
 
     <script>
-        // Logika Pengendali Navigasi SPA
+        // ==========================================================================
+        // 1. LOGIKA PENGENDALI NAVIGASI SPA (SINGLE PAGE APPLICATION)
+        // ==========================================================================
         const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
         const contentSections = document.querySelectorAll('.content-section');
 
@@ -632,16 +673,16 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                // 1. Atur Class Active Pada Menu Sidebar
+                // Atur Class Active Pada Menu Sidebar
                 menuItems.forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
 
-                // 2. Sembunyikan Semua Section Konten
+                // Sembunyikan Semua Section Konten
                 contentSections.forEach(section => {
                     section.classList.remove('section-active');
                 });
 
-                // 3. Tampilkan Hanya Section yang Sesuai
+                // Tampilkan Hanya Section yang Sesuai
                 const targetSectionId = this.getAttribute('data-section');
                 const targetSection = document.getElementById(targetSectionId);
                 if (targetSection) {
@@ -650,122 +691,377 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
             });
         });
 
+        // ==========================================================================
+        // 2. ENGINE AUTOMATION REMINDER & NOTIFIKASI SISTEM (CSP COMPLIANT)
+        // ==========================================================================
         document.addEventListener('DOMContentLoaded', function() {
-            // 1. Meminta izin (Permission) memunculkan notifikasi ke sistem operasi/browser
+            // Meminta izin (Permission) memunculkan notifikasi ke OS / Browser
             if (Notification.permission !== "granted" && Notification.permission !== "denied") {
                 Notification.requestPermission();
             }
 
-            // Variabel penampung agar notifikasi tidak muncul berulang-ulang di menit yang sama
-            let sudahMuncul = [];
+            // Variabel penampung ID agar tidak terjadi spamming notifikasi
+            // MENGGUNAKAN LOCALSTORAGE: Data tetap tersimpan meski halaman di-refresh
 
-            // 2. Fungsi Scanner untuk mengecek jadwal ke database via AJAX
+            // Fungsi untuk mendapatkan reminder yang sudah ditampilkan menit ini
+            function getSudahMunculReminders() {
+                const key = 'cekcing_reminders_shown_' + Math.floor(new Date().getTime() / 60000); // Key berdasarkan menit
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : [];
+            }
+
+            // Fungsi untuk menyimpan reminder yang sudah ditampilkan
+            function saveSudahMunculReminder(reminderId) {
+                const key = 'cekcing_reminders_shown_' + Math.floor(new Date().getTime() / 60000);
+                const sudahMuncul = getSudahMunculReminders();
+
+                if (!sudahMuncul.includes(reminderId)) {
+                    sudahMuncul.push(reminderId);
+                    localStorage.setItem(key, JSON.stringify(sudahMuncul));
+                }
+
+                // Cleanup: Hapus key lama (lebih dari 2 menit yang lalu)
+                const currentMinute = Math.floor(new Date().getTime() / 60000);
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('cekcing_reminders_shown_')) {
+                        const minute = parseInt(key.split('_').pop());
+                        if (currentMinute - minute > 2) {
+                            localStorage.removeItem(key);
+                        }
+                    }
+                }
+            }
+
+            // Fungsi Scanner untuk mengecek jadwal ke database via AJAX Fetch
             function jalankanScannerReminder() {
+                const now = new Date();
+                const hari_inggris = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][now.getDay()];
+                const daftar_hari = {
+                    'Sunday': 'Minggu',
+                    'Monday': 'Senin',
+                    'Tuesday': 'Selasa',
+                    'Wednesday': 'Rabu',
+                    'Thursday': 'Kamis',
+                    'Friday': 'Jumat',
+                    'Saturday': 'Sabtu'
+                };
+                const hari_ini = daftar_hari[hari_inggris];
+                const jam_sekarang = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+                console.log(`🔍 [${now.toLocaleTimeString()}] SCANNER RUNNING - Hari: ${hari_ini}, Jam: ${jam_sekarang}`);
+
                 fetch('proses/cek_notifikasi.php')
                     .then(response => response.json())
                     .then(res => {
-                        if (res.status === 'success' && res.data.length > 0) {
+                        console.log("📡 Response dari cek_notifikasi.php:", res);
+
+                        if (res.status === 'error') {
+                            console.error("❌ Error dari server:", res.message);
+                            if (res.debug) console.log("🐛 Debug info:", res.debug);
+                            return;
+                        }
+
+                        if (res.status === 'success' && res.data && res.data.length > 0) {
+                            console.log(`✅ Ditemukan ${res.data.length} reminder(s) yang cocok!`); // DEBUG
+                            const sudahMuncul = getSudahMunculReminders();
+                            console.log("📋 Reminder yang sudah ditampilkan di menit ini:", sudahMuncul);
+
                             res.data.forEach(reminder => {
-                                // Jika ID pengingat belum pernah dimunculkan pada sesi menit ini
+                                console.log(`🔔 Checking reminder ID: ${reminder.id}`);
+                                // Jika ID pengingat belum pernah dimunculkan pada MENIT INI
                                 if (!sudahMuncul.includes(reminder.id)) {
+                                    console.log(`✔️ Reminder ID ${reminder.id} BARU - TAMPILKAN NOTIFIKASI!`);
 
                                     // Eksekusi trigger notifikasi desktop/HP
                                     tampilkanNotifikasiSistem("CekC!ng Reminder 🔔", reminder.pesan);
 
-                                    // Catat ID agar tidak spamming
-                                    sudahMuncul.push(reminder.id);
+                                    // Catat ID ke localStorage agar tidak muncul lagi sebelum menit berganti
+                                    saveSudahMunculReminder(reminder.id);
+
+                                    console.log("💾 Reminder ID disimpan ke localStorage");
+                                } else {
+                                    console.log(`⏭️ Reminder ID ${reminder.id} sudah ditampilkan di menit ini, SKIP`);
                                 }
                             });
                         } else {
-                            // Reset antrean jika menit sudah berganti dan tidak ada transaksi aktif
-                            sudahMuncul = [];
+                            console.log(`⏸️ Tidak ada reminder yang sesuai pada waktu ini (${hari_ini}, ${jam_sekarang})`);
+                            if (res.debug) console.log("🐛 Debug info:", res.debug);
                         }
                     })
-                    .catch(err => console.error("Gagal melakukan scan pengingat:", err));
+                    .catch(err => console.error("❌ Gagal melakukan scan pengingat:", err));
             }
 
-            // 3. Fungsi untuk memunculkan alert notifikasi fisik
+            // Fungsi Notifikasi dengan Sistem Fallback Multi-Platform (Aman dari Eval)
             function tampilkanNotifikasiSistem(title, bodyText) {
-                if (Notification.permission === "granted") {
-                    const opsi = {
-                        body: bodyText,
-                        icon: 'assets/img/logo_cekcing.png', // Sesuaikan dengan path logo CekC!ng kamu
-                        vibrate: [200, 100, 200],
-                        requireInteraction: true // Notifikasi tetap menetap sampai di-close/klik oleh user
-                    };
+                console.log("🔔 NOTIFIKASI TRIGGERED: " + title);
+                console.log("   Pesan: " + bodyText);
 
-                    const notif = new Notification(title, opsi);
+                // 🎵 LANGSUNG MAINKAN AUDIO ALERT
+                playNotificationSound();
 
-                    // Jika notifikasi diklik, arahkan user langsung ke tab pengingat
-                    notif.onclick = function() {
-                        window.focus();
-                        document.querySelector('[data-section="pengingat-section"]').click();
-                    };
-                } else {
-                    // Fallback alternatif menggunakan alert bawaan browser jika izin notifikasi diblokir
-                    alert(bodyText);
+                // 🟢 LANGSUNG TAMPILKAN VISUAL CARD (JANGAN TUNGGU NOTIFICATION API)
+                tampilkanFallback(title, bodyText);
+
+                // 🔔 TRY NOTIFICATION API SEBAGAI BONUS (di latar belakang)
+                if (window.Notification && Notification.permission === "granted") {
+                    try {
+                        const opsi = {
+                            body: bodyText,
+                            icon: 'img/logo.png',
+                            vibrate: [200, 100, 200],
+                            requireInteraction: false,
+                            tag: 'reminder-' + new Date().getTime()
+                        };
+                        new Notification(title, opsi);
+                        console.log("✅ Notifikasi sistem OS juga ditrigger");
+                    } catch (e) {
+                        console.log("⚠️ Notification API tidak bisa dipakai:", e.message);
+                    }
                 }
             }
 
-            // Run otomatis pertama kali saat halaman dibuka
+            // 🎵 Fungsi untuk memainkan audio notification
+            function playNotificationSound() {
+                try {
+                    // Buat audio context dengan beep sound
+                    const audioContext = new(window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    // Set frekuensi dan durasi
+                    oscillator.frequency.value = 800; // Hz
+                    oscillator.type = 'sine';
+
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+
+                    console.log("🔊 Audio beep dimainkan");
+                } catch (e) {
+                    console.log("⚠️ Audio notification tidak bisa dijalankan:", e.message);
+                }
+            }
+
+            // Fallback: Tampilkan notifikasi via visual alert di halaman
+            function tampilkanFallback(title, bodyText) {
+                console.log("📢 MENAMPILKAN VISUAL NOTIFICATION CARD");
+
+                // Buat elemen notifikasi visual di halaman
+                const notifEl = document.createElement('div');
+                notifEl.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(180deg, #124170, #1C5478);
+                    color: white;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                    z-index: 99999;
+                    max-width: 450px;
+                    font-family: Poppins, sans-serif;
+                    animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                    text-align: center;
+                    border-left: 6px solid #ffffff;
+                    border-right: 6px solid #ffffff;
+                `;
+
+                notifEl.innerHTML = `
+                    <div style="
+                        font-size: 3rem;
+                        margin-bottom: 15px;
+                        animation: bounce 0.6s ease-in-out;
+                    ">🔔</div>
+                    <div style="
+                        font-weight: bold;
+                        font-size: 1.4rem;
+                        margin-bottom: 12px;
+                        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                    ">${title}</div>
+                    <div style="
+                        font-size: 1rem;
+                        line-height: 1.6;
+                        margin-bottom: 20px;
+                        opacity: 0.95;
+                    ">${bodyText}</div>
+                    <div style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: center;
+                    ">
+                        <button onclick="this.parentElement.parentElement.remove()" style="
+                            background: rgba(255,255,255,0.3);
+                            color: white;
+                            border: 2px solid white;
+                            padding: 10px 20px;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-size: 0.95rem;
+                            font-weight: bold;
+                            transition: all 0.3s;
+                            font-family: Poppins, sans-serif;
+                        " onmouseover="this.style.background='rgba(255,255,255,0.5); this.style.transform='scale(1.05)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1)'">
+                            ✓ Tutup
+                        </button>
+                    </div>
+                `;
+
+                document.body.appendChild(notifEl);
+                console.log("✅ Visual card ditampilkan di CENTER layar");
+
+                // Hapus otomatis setelah 8 detik
+                const autoCloseTimer = setTimeout(() => {
+                    if (notifEl.parentElement) {
+                        notifEl.style.animation = 'fadeOut 0.3s ease-out';
+                        setTimeout(() => notifEl.remove(), 300);
+                        console.log("📴 Card auto-close (timeout)");
+                    }
+                }, 8000);
+
+                // Batalkan auto-close jika user klik tombol
+                const closeBtn = notifEl.querySelector('button');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        clearTimeout(autoCloseTimer);
+                    });
+                }
+            }
+
+            // Tambah CSS animations untuk notifikasi
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes popIn {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0.7);
+                        opacity: 0;
+                    }
+                    50% {
+                        transform: translate(-50%, -50%) scale(1.05);
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(1);
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes bounce {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-15px); }
+                }
+
+                @keyframes fadeOut {
+                    from {
+                        opacity: 1;
+                    }
+                    to {
+                        opacity: 0;
+                    }
+                }
+
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(400px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // TEST MANUAL: Tambah button untuk test notifikasi
+            console.log("%c🧪 DEBUG MODE: Ketik di console: testNotifikasi() untuk test notifikasi", "color: blue; font-weight: bold; font-size: 12px;");
+            window.testNotifikasi = function() {
+                tampilkanNotifikasiSistem("Test Notifikasi 🧪", "Ini adalah notifikasi test untuk debugging - seharusnya ada di TENGAH layar dengan BEEP sound");
+            };
+
+            // 1. Jalankan scanner pertama kali saat halaman siap dimuat
             jalankanScannerReminder();
 
-            // Jalankan mesin pencari otomatis secara berkala setiap 60 detik (60000 ms)
-            setInterval(jalankanScannerReminder, 60000);
+            // 2. Loop Otomatis Pengganti setInterval (Lolos Validasi Aman Kebijakan CSP)
+            function loopScannerAman() {
+                setTimeout(() => {
+                    jalankanScannerReminder();
+                    loopScannerAman(); // Panggil fungsi kembali (rekursif)
+                }, 10000); // ⚡ UNTUK TESTING: Eksekusi setiap 10 detik (ganti ke 60000 saat production)
+            }
+
+            // Mulai jalankan loop engine pengingat
+            loopScannerAman();
+
+            console.log("%c✅ REMINDER SYSTEM STARTED - Scanner akan berjalan setiap 10 detik", "color: green; font-weight: bold; font-size: 12px;");
         });
 
+        // ==========================================================================
+        // 3. HANDLER AJAX FORM SUBMIT FEEDBACK (VIA FETCH API)
+        // ==========================================================================
+        const feedbackForm = document.getElementById('feedbackForm');
+        if (feedbackForm) {
+            feedbackForm.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Mencegah reload halaman ke dashboard
+                const btnSubmit = document.getElementById('btnKirimFeedback');
+                const pesanInput = document.getElementById('pesanFeedback');
 
-            const btnSubmit = document.getElementById('btnKirimFeedback');
-            const pesanInput = document.getElementById('pesanFeedback');
+                // Ubah status komponen tombol menjadi mode Loading Animasi
+                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
+                btnSubmit.disabled = true;
 
-            // Ubah status tombol saat loading
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengirim...';
-            btnSubmit.disabled = true;
+                const formData = new FormData(this);
 
-            const formData = new FormData(this);
+                fetch('proses/proses_feedback_email.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert('Terima kasih! Feedback Anda berhasil dikirim ke tim pengembang.');
+                            pesanInput.value = ''; // Reset isi teks area form
+                        } else {
+                            alert('Gagal mengirim feedback: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error Jaringan:', error);
+                        alert('Terjadi kesalahan jaringan. Cek koneksi Anda.');
+                    })
+                    .finally(() => {
+                        // Kembalikan visual tombol ke kondisi awal semula
+                        btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Masukan';
+                        btnSubmit.disabled = false;
+                    });
+            });
+        }
 
-            // Kirim data secara asinkron ke file PHP pemroses
-            fetch('proses/proses_feedback_email.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Terima kasih! Feedback Anda berhasil dikirim ke tim pengembang.');
-                        pesanInput.value = ''; // Kosongkan form kembali
-                    } else {
-                        alert('Gagal mengirim feedback: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan jaringan.');
-                })
-                .finally(() => {
-                    // Kembalikan status tombol seperti semula
-                    btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Masukan';
-                    btnSubmit.disabled = false;
-                });
-        });
-
-        // Logika Dropdown Profil
+        // ==========================================================================
+        // 4. INTERAKSI TOGGLE DROPDOWN PROFIL SIDEBAR
+        // ==========================================================================
         const profileToggle = document.getElementById('profileToggle');
         const profileDropdown = document.getElementById('profileDropdown');
 
-        profileToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            profileDropdown.classList.toggle('active');
-        });
+        if (profileToggle && profileDropdown) {
+            profileToggle.addEventListener('click', function(e) {
+                e.stopPropagation(); // Mencegah event bubbling ke objek window
+                profileDropdown.classList.toggle('active');
+            });
 
-        window.addEventListener('click', function() {
-            if (profileDropdown.classList.contains('active')) {
-                profileDropdown.classList.remove('active');
-            }
-        });
+            // Tutup dropdown secara otomatis jika pengguna mengklik area luar menu
+            window.addEventListener('click', function() {
+                if (profileDropdown.classList.contains('active')) {
+                    profileDropdown.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 

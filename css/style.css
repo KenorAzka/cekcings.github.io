@@ -592,3 +592,89 @@ h1 {
     max-width: 550px; /* Membatasi agar baris kalimat tidak terlalu panjang menyamping */
 }
 
+/* ==========================================================================
+   MINIMALIST FOOTER SMART STYLE
+   ========================================================================== */
+.site-footer {
+    width: 100%;
+    background-color: #000000; /* Sedikit lebih gelap dari #124170 untuk efek kedalaman */
+    color: #ffffff;
+    padding: 20px 10%;
+    font-family: 'Poppins', sans-serif;
+    border-top: 1px solid rgba(255, 255, 255, 0.08); /* Garis batas tipis yang elegan */
+    box-sizing: border-box;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 30px;
+}
+
+/* Bagian Kiri: Brand & Tagline */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+}
+
+.footer-logo {
+    height: 30px; /* Menyesuaikan tinggi logo bawaan navbar Anda */
+    width: auto;
+    object-fit: contain;
+    align-self: flex-start;
+}
+
+.footer-brand p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Bagian Kanan: Navigasi & Copyright */
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.footer-copyright {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE FRIENDLY)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 40px 5%;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 35px;
+    }
+
+    .footer-brand {
+        align-items: center;
+        max-width: 100%;
+    }
+
+    .footer-logo {
+        align-self: center;
+    }
+
+    .footer-right {
+        align-items: center;
+        width: 100%;
+    }
+}
