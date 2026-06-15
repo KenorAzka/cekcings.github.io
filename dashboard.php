@@ -95,6 +95,14 @@ $reminder_aktif = null;
 if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     $reminder_aktif = mysqli_fetch_assoc($tampil_reminder);
 }
+
+// Ambil 5 aktivitas terbaru dari tabel history, diurutkan dari yang paling baru (DESC)
+$query_recent =     "SELECT h.*, w.nama_barang 
+                FROM history h 
+                LEFT JOIN wishlists w ON h.id_wishlist = w.id_wishlist 
+                WHERE h.id_user = '$id_user' 
+                ORDER BY h.tanggal DESC";
+$recent_result = mysqli_query($conn, $query_recent);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +111,7 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - CekC!ng</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=1.3">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.4">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -143,6 +151,10 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
 
                     <li class="menu-item" data-section="pengingat-section">
                         <a href="#"><i class="fa-solid fa-bell"></i> Reminder</a>
+                    </li>
+
+                    <li class="menu-item" data-section="recent-section">
+                        <a href="#"><i class="fa-solid fa-history"></i> Recent</a>
                     </li>
 
                     <li class="menu-item" data-section="feedback-section">
@@ -377,7 +389,7 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                         <div class="right-widget-card">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                                 <h3 style="margin:0;">Aktivitas Terakhir</h3>
-                                <a href="#" class="view-all-link" style="color:#2563eb;">Lihat Semua</a>
+                                <a href="#" class="view-all-link" style="color:#2563eb;" onclick="document.querySelector('[data-section=\'recent-section\']').click();">Lihat Semua</a>
                             </div>
                             <div class="activity-list">
                                 <?php
@@ -637,6 +649,53 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
                     }
                     ?>
                 </div>
+            </section>
+
+            <section class="recent-activities-box dashboard-content content-section" id="recent-section">
+                <h3>
+                    <i class="fa-solid fa-clock-rotate-left"></i> Recent Activities
+                </h3>
+
+                <ul class="activity-list">
+                    <?php
+                    if (mysqli_num_rows($recent_result) > 0) {
+                        while ($act = mysqli_fetch_assoc($recent_result)) {
+                            $is_pemasukan = ($act['jenis'] == 'Pemasukan');
+                            $icon = $is_pemasukan ? 'fa-arrow-down-long' : 'fa-arrow-up-long';
+                            $bg_icon = $is_pemasukan ? '#2ecc71' : '#e74c3c';
+                            $tanda = $is_pemasukan ? '+' : '-';
+
+                            // Menentukan teks aksi (Menabung / Menarik)
+                            $aksi_teks = $is_pemasukan ? 'Menabung untuk' : 'Penarikan dari';
+                    ?>
+                            <li class="activity-item">
+                                <div class="activity-left-content">
+                                    <div class="activity-icon-badge" style="background: <?php echo $bg_icon; ?>;">
+                                        <i class="fa-solid <?php echo $icon; ?>"></i>
+                                    </div>
+                                    <div>
+                                        <div class="activity-title"><?php echo htmlspecialchars($act['label_kategori']); ?></div>
+
+                                        <?php if (!empty($act['nama_barang'])): ?>
+                                            <div class="activity-target-desc">
+                                                <?php echo $aksi_teks; ?> <strong><?php echo htmlspecialchars($act['nama_barang']); ?></strong>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <div class="activity-date"><?php echo date('d M Y, H:i', strtotime($act['tanggal'])); ?></div>
+                                    </div>
+                                </div>
+                                <div class="activity-amount" style="color: <?php echo $bg_icon; ?>;">
+                                    <?php echo $tanda; ?> Rp<?php echo number_format((float)$act['jumlah'], 0, ',', '.'); ?>
+                                </div>
+                            </li>
+                    <?php
+                        }
+                    } else {
+                        echo "<li style='text-align: center; padding: 30px 0; color: rgba(255,255,255,0.5); font-size: 0.85rem;'>Belum ada aktivitas finansial terakhir.</li>";
+                    }
+                    ?>
+                </ul>
             </section>
 
             <section id="feedback-section" class="dashboard-content content-section">
