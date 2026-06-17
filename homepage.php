@@ -16,9 +16,9 @@
     <nav class="navbar">
         <a href="#"><img src="img/logo.png" alt="Logo CekC!ng" class="logo"></a>
         <ul class="nav-links">
+            <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#feedback">Feedback</a></li>
         </ul>
     </nav>
 
@@ -80,25 +80,6 @@
             </div>
         </section>
 
-        <section id="feedback">
-            <div class="feedback-wrapper">
-                <div class="feedback-header">
-                    <h2>Give Us<br>Feedback</h2>
-                    <p>Kritik, saran, atau masukan Anda sangat berharga bagi perkembangan CekC!ng menjadi lebih baik lagi.</p>
-                </div>
-                <div class="feedback-card">
-                    <form id="feedbackForm">
-                        <div class="form-group">
-                            <label for="pesanFeedback">Masukan / Kritik & Saran Anda</label>
-                            <textarea name="pesan" id="pesanFeedback" placeholder="Tulis masukan Anda di sini secara detail..." required></textarea>
-                        </div>
-                        <a href="loginNregist.php" class="btn-submit" style="display: block; text-align: center; text-decoration: none; box-sizing: border-box;">
-                            <span>Kirim Masukan</span>
-                        </a>
-                    </form>
-                </div>
-            </div>
-        </section>
         <footer class="site-footer">
             <div class="footer-container">
                 <div class="footer-brand">

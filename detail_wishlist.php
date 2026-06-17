@@ -61,7 +61,7 @@ $history_result = mysqli_query($conn, $query_history);
 
 <head>
     <meta charset="UTF-8">
-    <title>My Wishlist Detail - <?php echo htmlspecialchars($data['nama_barang']); ?></title>
+    <title>CekC!ng</title>
     <link rel="stylesheet" href="dashboard_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>

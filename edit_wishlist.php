@@ -27,17 +27,23 @@ if (!$d) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Wishlist - <?php echo htmlspecialchars($d['nama_barang']); ?></title>
+    <title>CekC!ng</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
         body {
             background: linear-gradient(to bottom, #124170, #1C5478, #67C090);
@@ -84,7 +90,7 @@ if (!$d) {
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .image-preview-frame img {
@@ -108,14 +114,43 @@ if (!$d) {
             color: white;
         }
 
-        .form-panel h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
-        .form-panel p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 25px; }
+        .form-panel h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
 
-        .input-group { margin-bottom: 18px; }
-        .input-group label { display: block; font-size: 0.85rem; margin-bottom: 8px; color: rgba(255, 255, 255, 0.8); }
+        .form-panel p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 25px;
+        }
 
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i { position: absolute; left: 15px; color: #1C5478; font-size: 1rem; z-index: 2; }
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            color: #1C5478;
+            font-size: 1rem;
+            z-index: 2;
+        }
+
         .input-wrapper input {
             width: 100%;
             padding: 12px 15px 12px 45px;
@@ -138,18 +173,54 @@ if (!$d) {
             cursor: pointer;
         }
 
-        .action-buttons { display: flex; gap: 15px; margin-top: 25px; }
-        .btn { flex: 1; padding: 12px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer; border: none; text-align: center; text-decoration: none; transition: all 0.2s; }
-        .btn-submit { background: #67C090; color: white; }
-        .btn-cancel { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .btn-submit:hover { background: #56b081; transform: translateY(-2px); }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-submit {
+            background: #67C090;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-submit:hover {
+            background: #56b081;
+            transform: translateY(-2px);
+        }
 
         @media (max-width: 768px) {
-            .split-container { flex-direction: column; }
-            .preview-panel { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+            .split-container {
+                flex-direction: column;
+            }
+
+            .preview-panel {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="split-container">
@@ -163,10 +234,10 @@ if (!$d) {
         <div class="form-panel">
             <h2>Ubah Impian</h2>
             <p>Perbarui detail target tabungan wishlist Anda.</p>
-            
+
             <form action="proses/proses_edit_wishlist.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id_wishlist" value="<?php echo $d['id_wishlist']; ?>">
-                
+
                 <div class="input-group">
                     <label>Nama Barang / Impian</label>
                     <div class="input-wrapper">
@@ -217,7 +288,7 @@ if (!$d) {
         const fileInput = document.getElementById('fileInput');
         const liveImage = document.getElementById('liveImage');
         const previewStatus = document.getElementById('previewStatus');
-        const originalImage = liveImage.src; 
+        const originalImage = liveImage.src;
 
         fileInput.addEventListener('change', function() {
             const file = this.files[0];
@@ -227,7 +298,7 @@ if (!$d) {
                 reader.addEventListener('load', function() {
                     liveImage.setAttribute('src', this.result);
                     previewStatus.innerHTML = "Pratinjau foto baru ✨";
-                    previewStatus.style.color = "#67C090"; 
+                    previewStatus.style.color = "#67C090";
                     previewStatus.style.opacity = "1";
                 });
                 reader.readAsDataURL(file);
@@ -240,4 +311,5 @@ if (!$d) {
         });
     </script>
 </body>
+
 </html>

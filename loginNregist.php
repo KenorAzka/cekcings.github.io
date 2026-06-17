@@ -26,7 +26,7 @@
 
         <div class="form-login" id="loginForm">
             <h1>Log In</h1>
-            <form action="login.php" method="post">
+            <form action="proses/login.php" method="post">
                 <div class="isi_form">
                     <input type="text" name="email" id="loginEmail" placeholder="Email" required>
                 </div>

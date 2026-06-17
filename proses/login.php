@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/proses/koneksi.php';
+require_once __DIR__ . '/koneksi.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email    = mysqli_real_escape_string($conn, $_POST['email']);
@@ -20,18 +20,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $row['username'];
             $_SESSION['email']    = $row['email'];
             // Alihkan langsung ke dashboard
-            header("Location: dashboard.php");
+            header("Location: ../dashboard.php");
             exit(); // Wajib ada untuk menghentikan baris kode di bawahnya
         } else {
             echo "<script>
                     alert('Password salah!');
-                    window.location.href = 'loginNregist.php';
+                    window.location.href = '../loginNregist.php';
                 </script>";
         }
     } else {
         echo "<script>
                 alert('Email tidak ditemukan!');
-                window.location.href = 'loginNregist.php';
+                window.location.href = '../loginNregist.php';
             </script>";
     }
 }

@@ -5,6 +5,10 @@
     box-sizing: border-box;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(to bottom, #124170, #1C5478, #67C090);
@@ -727,7 +731,11 @@ background-color: #e0e0e0;
 
 /* Responsive Grid System */
 .reminder-prof-grid {
+    background-color: #E2E2E2;
+    padding: 10px;
+    border-radius: 15px;
     display: grid;
+    min-height: 70vh;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
@@ -842,7 +850,7 @@ background-color: #e0e0e0;
 /* PROFIL CSS */
 /* Master Professional Card Structure */
 .prof-reminder-card {
-    background: #E2E2E2;
+    background: #124170;
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 20px;
@@ -921,7 +929,7 @@ background-color: #e0e0e0;
 }
 
 .prof-reminder-title {
-    color: #0f172a;
+    color: #ffffff;
     font-size: 1.1rem;
     font-weight: 600;
     margin: 0 0 8px 0;
@@ -938,7 +946,7 @@ background-color: #e0e0e0;
     display: flex;
     align-items: center;
     gap: 6px;
-    color: #64748b;
+    color: #919191;
     font-size: 0.8rem;
     font-weight: 500;
 }
@@ -1021,14 +1029,10 @@ background-color: #e0e0e0;
     margin-bottom: 12px;
 }
 
-.prof-empty-state h5 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin: 0 0 6px 0;
-}
-
 .prof-empty-state p {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: #555;
+    font-style: italic;
     margin: 0;
+    font-size: 1em;
+    margin-top: 4rem;
 }

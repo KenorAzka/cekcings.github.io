@@ -96,7 +96,7 @@ if ($tampil_reminder && mysqli_num_rows($tampil_reminder) > 0) {
     $reminder_aktif = mysqli_fetch_assoc($tampil_reminder);
 }
 
-// Ambil 5 aktivitas terbaru dari tabel history, diurutkan dari yang paling baru (DESC)
+// Ambil aktivitas terbaru dari tabel history, diurutkan dari yang paling baru (DESC)
 $query_recent =     "SELECT h.*, w.nama_barang 
                 FROM history h 
                 LEFT JOIN wishlists w ON h.id_wishlist = w.id_wishlist 
@@ -110,8 +110,8 @@ $recent_result = mysqli_query($conn, $query_recent);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - CekC!ng</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=1.4">
+    <title>CekC!ng</title>
+    <link rel="stylesheet" href="css/dashboard.css?v=1.5">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -642,9 +642,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                         }
                     } else {
                         echo "<div class='prof-empty-state'>
-                <div class='prof-empty-icon'><i class='fa-regular fa-bell'></i></div>
-                <h5>Belum ada pengingat</h5>
-                <p>Jadwalkan notifikasi rutin untuk membantumu disiplin menabung.</p>
+                <p class='empty-text'>Belum ada pengingat, Jadwalkan notifikasi rutin untuk membantumu disiplin menabung.</p>
             </div>";
                     }
                     ?>
@@ -692,7 +690,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                     <?php
                         }
                     } else {
-                        echo "<li style='text-align: center; padding: 30px 0; color: rgba(255,255,255,0.5); font-size: 0.85rem;'>Belum ada aktivitas finansial terakhir.</li>";
+                        echo "<li style='text-align: center; font-style: italic; padding: 30px 0; color: #555; font-size: 1em;'>Belum ada aktivitas finansial terakhir.</li>";
                     }
                     ?>
                 </ul>
@@ -723,10 +721,24 @@ $recent_result = mysqli_query($conn, $query_recent);
 
     <script>
         // ==========================================================================
-        // 1. LOGIKA PENGENDALI NAVIGASI SPA (SINGLE PAGE APPLICATION)
+        // 1. LOGIKA PENGENDALI NAVIGASI SPA (SINGLE PAGE APPLICATION) WITH MEMORY
         // ==========================================================================
         const menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
         const contentSections = document.querySelectorAll('.content-section');
+
+        // Fungsi pusat untuk mengubah tampilan section konten
+        function ubahTampilanSection(targetSectionId) {
+            // Sembunyikan Semua Section Konten
+            contentSections.forEach(section => {
+                section.classList.remove('section-active');
+            });
+
+            // Tampilkan Hanya Section yang Sesuai
+            const targetSection = document.getElementById(targetSectionId);
+            if (targetSection) {
+                targetSection.classList.add('section-active');
+            }
+        }
 
         menuItems.forEach(item => {
             item.addEventListener('click', function(e) {
@@ -736,18 +748,31 @@ $recent_result = mysqli_query($conn, $query_recent);
                 menuItems.forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
 
-                // Sembunyikan Semua Section Konten
-                contentSections.forEach(section => {
-                    section.classList.remove('section-active');
-                });
-
-                // Tampilkan Hanya Section yang Sesuai
                 const targetSectionId = this.getAttribute('data-section');
-                const targetSection = document.getElementById(targetSectionId);
-                if (targetSection) {
-                    targetSection.classList.add('section-active');
-                }
+
+                // Jalankan fungsi ganti halaman
+                ubahTampilanSection(targetSectionId);
+
+                // SIMPAN KE MEMORI BROWSER: Mengamankan posisi section saat di-refresh
+                localStorage.setItem('cekcing_active_section', targetSectionId);
             });
+        });
+
+        // Pengecekan otomatis saat halaman di-load / refresh
+        document.addEventListener("DOMContentLoaded", function() {
+            const savedSection = localStorage.getItem('cekcing_active_section');
+
+            if (savedSection) {
+                // Hapus class active default dari HTML bawaan
+                menuItems.forEach(i => i.classList.remove('active'));
+
+                // Cari menu sidebar yang sesuai dengan data di memori
+                const targetMenu = document.querySelector(`.sidebar-menu .menu-item[data-section="${savedSection}"]`);
+                if (targetMenu) {
+                    targetMenu.classList.add('active');
+                    ubahTampilanSection(savedSection);
+                }
+            }
         });
 
         // ==========================================================================
@@ -783,7 +808,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                 const currentMinute = Math.floor(new Date().getTime() / 60000);
                 for (let i = 0; i < localStorage.length; i++) {
                     const key = localStorage.key(i);
-                    if (key.startsWith('cekcing_reminders_shown_')) {
+                    if (key && key.startsWith('cekcing_reminders_shown_')) {
                         const minute = parseInt(key.split('_').pop());
                         if (currentMinute - minute > 2) {
                             localStorage.removeItem(key);
@@ -955,7 +980,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                         gap: 10px;
                         justify-content: center;
                     ">
-                        <button onclick="this.parentElement.parentElement.remove()" style="
+                        <button class="btn-tutup-notif" style="
                             background: rgba(255,255,255,0.3);
                             color: white;
                             border: 2px solid white;
@@ -966,7 +991,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                             font-weight: bold;
                             transition: all 0.3s;
                             font-family: Poppins, sans-serif;
-                        " onmouseover="this.style.background='rgba(255,255,255,0.5); this.style.transform='scale(1.05)'" onmouseout="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='scale(1)'">
+                        ">
                             ✓ Tutup
                         </button>
                     </div>
@@ -974,6 +999,13 @@ $recent_result = mysqli_query($conn, $query_recent);
 
                 document.body.appendChild(notifEl);
                 console.log("✅ Visual card ditampilkan di CENTER layar");
+
+                // Handler manual remove element saat diklik tombol tutup
+                const btnTutup = notifEl.querySelector('.btn-tutup-notif');
+                btnTutup.addEventListener('click', function() {
+                    clearTimeout(autoCloseTimer);
+                    notifEl.remove();
+                });
 
                 // Hapus otomatis setelah 8 detik
                 const autoCloseTimer = setTimeout(() => {
@@ -983,14 +1015,6 @@ $recent_result = mysqli_query($conn, $query_recent);
                         console.log("📴 Card auto-close (timeout)");
                     }
                 }, 8000);
-
-                // Batalkan auto-close jika user klik tombol
-                const closeBtn = notifEl.querySelector('button');
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => {
-                        clearTimeout(autoCloseTimer);
-                    });
-                }
             }
 
             // Tambah CSS animations untuk notifikasi
@@ -1016,23 +1040,8 @@ $recent_result = mysqli_query($conn, $query_recent);
                 }
 
                 @keyframes fadeOut {
-                    from {
-                        opacity: 1;
-                    }
-                    to {
-                        opacity: 0;
-                    }
-                }
-
-                @keyframes slideIn {
-                    from {
-                        transform: translateX(400px);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
+                    from { opacity: 1; }
+                    to { opacity: 0; }
                 }
             `;
             document.head.appendChild(style);
