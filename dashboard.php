@@ -111,7 +111,8 @@ $recent_result = mysqli_query($conn, $query_recent);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
-    <link rel="stylesheet" href="css/dashboard.css?v=1.5">
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/dashboard.css?v=1.6">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -127,13 +128,19 @@ $recent_result = mysqli_query($conn, $query_recent);
 </head>
 
 <body>
-
+    <button id="sidebarToggle" class="sidebar-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
     <div class="dashboard-container">
 
         <aside class="sidebar">
             <div class="sidebar-top">
                 <img src="img/logo.png" alt="Logo CekC!ng" class="sidebar-logo">
             </div>
+
+            <button id="sidebarToggle" class="sidebar-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
 
             <nav class="sidebar-menu">
                 <ul>
@@ -208,7 +215,7 @@ $recent_result = mysqli_query($conn, $query_recent);
                             ?>
                         </span>
                     </div>
-                    <button class="notif-btn"><i class="fa-regular fa-bell"></i></button>
+                    <button class="notif-btn"><i class="fa-regular fa-bell"><a href="#pengingat-section"></a></i></button>
                 </div>
             </header>
 
@@ -519,7 +526,7 @@ $recent_result = mysqli_query($conn, $query_recent);
 
             <section id="completed-section" class="dashboard-content content-section">
                 <div class="wishlist-header">
-                    <h2>Congrats, <?php echo htmlspecialchars($username); ?> inilah daftar wishlistmu yang sudah terpenuhi 🎉</h2>
+                    <h2>Congrats, <?php echo htmlspecialchars($username); ?> inilah daftar wishlistmu yang sudah terpenuhi </h2>
                 </div>
                 <p style="color: white; margin-top: 10px; margin-bottom: 20px;">Riwayat impian yang berhasil kamu tabung dengan konsisten.</p>
 
@@ -1129,6 +1136,83 @@ $recent_result = mysqli_query($conn, $query_recent);
                     profileDropdown.classList.remove('active');
                 }
             });
+        }
+
+        // ==========================================================================
+        // 5. LOGIKA TOGGLE SIDEBAR RESPONSIF (MOBILE VIEW)
+        // ==========================================================================
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar'); // Pastikan tag pembungkus sidebarmu punya class 'sidebar'
+
+        if (sidebarToggle && sidebar) {
+            sidebarToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sidebar.classList.toggle('sidebar-open');
+            });
+
+            // Otomatis tutup sidebar di HP jika user mengklik salah satu menu item
+            const mobileMenuItems = document.querySelectorAll('.sidebar-menu .menu-item');
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    if (sidebar.classList.contains('sidebar-open')) {
+                        sidebar.classList.remove('sidebar-open');
+                    }
+                });
+            });
+
+            // Klik di area luar sidebar untuk menutup otomatis
+            window.addEventListener('click', function(e) {
+                if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
+                    sidebar.classList.remove('sidebar-open');
+                }
+            });
+        }
+
+        // ==========================================================================
+        // LOGIKA AUTO SCROLL SUMMARY CARDS (MOBILE ONLY)
+        // ==========================================================================
+        const container = document.querySelector('.summary-cards-container');
+
+        if (container) {
+            let scrollInterval;
+
+            function startAutoScroll() {
+                // Jalankan interval setiap 5000ms (5 detik)
+                scrollInterval = setInterval(() => {
+                    // Hanya jalankan auto-scroll jika sedang di layar HP/Tablet (< 769px)
+                    if (window.innerWidth <= 768) {
+                        const cardWidth = container.querySelector('.summary-card').offsetWidth + 12; // Lebar kartu + gap
+                        const maxScroll = container.scrollWidth - container.clientWidth;
+
+                        // Jika posisi scroll sudah mentok di kanan, balik lagi ke awal (paling kiri)
+                        if (container.scrollLeft >= maxScroll - 5) {
+                            container.scrollTo({
+                                left: 0,
+                                behavior: 'smooth'
+                            });
+                        } else {
+                            // Geser ke kanan sejauh satu kartu
+                            container.scrollBy({
+                                left: cardWidth,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                }, 5000);
+            }
+
+            function stopAutoScroll() {
+                clearInterval(scrollInterval);
+            }
+
+            // Mulai auto-scroll pertama kali
+            startAutoScroll();
+
+            /* UX Tip: Hentikan auto-scroll sementara jika user sedang menyentuh/menggeser 
+               kartu secara manual agar tidak terjadi tabrakan gerakan (glitch).
+            */
+            container.addEventListener('touchstart', stopAutoScroll);
+            container.addEventListener('touchend', startAutoScroll);
         }
     </script>
 </body>

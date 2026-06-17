@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
     </style>
@@ -33,7 +34,7 @@
                 <div class="isi_form">
                     <input type="password" name="password" id="loginPassword" placeholder="Password" required>
                 </div>
-                <p class="lupa"><a href="#">Forgot Password?</a></p>
+                <p class="lupa"><a href="#forgotModal" id="forgotLink">Forgot Password?</a></p>
                 <button type="submit">Login</button>
                 <p class="regist-link">
                     <a href="#" id="toRegister">Don't have an account?</a>
@@ -61,27 +62,68 @@
         </div>
     </div>
 
+    <div id="forgotModal" class="modal-overlay">
+        <div class="modal-content-glass">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-key" style="color: #a3e635;"></i> Pemulihan Akun</h3>
+                <span class="close-modal" id="closeForgot">&times;</span>
+            </div>
+            <p>Masukkan alamat email yang terdaftar. Kami akan mengirimkan instruksi untuk membuat password baru.</p>
+
+            <form action="proses/forgot_password.php" method="POST">
+                <div class="input-group-forgot">
+                    <label>Email Anda</label>
+                    <div class="input-wrapper-forgot">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Contoh: user@email.com" required>
+                    </div>
+                </div>
+                <button type="submit" name="submit_forgot" class="btn-submit-forgot">Kirim Link Reset</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const loginForm = document.getElementById('loginForm');
         const registForm = document.getElementById('registForm');
         const toRegister = document.getElementById('toRegister');
         const toLogin = document.getElementById('toLogin');
+        const forgotModal = document.getElementById('forgotModal');
+        const closeForgot = document.getElementById('closeForgot');
+        const forgotLink = document.getElementById('forgotLink');
 
         // Ketika klik "Don't have an account?"
         toRegister.addEventListener('click', function(e) {
             e.preventDefault();
             loginForm.style.display = 'none';
-            registForm.style.display = 'flex'; // UBAH DARI 'block' KE 'flex'
+            registForm.style.display = 'flex';
         });
 
         // Ketika klik "Already have an account?"
         toLogin.addEventListener('click', function(e) {
             e.preventDefault();
             registForm.style.display = 'none';
-            loginForm.style.display = 'flex'; // UBAH DARI 'block' KE 'flex'
+            loginForm.style.display = 'flex';
+        });
+
+        // Membuka modal menggunakan ID forgotLink yang valid
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotModal.style.display = 'flex';
+        });
+
+        // Menutup modal saat tombol silang (X) diklik
+        closeForgot.addEventListener('click', () => {
+            forgotModal.style.display = 'none';
+        });
+
+        // Menutup modal jika user mengklik area luar kotak modal
+        window.addEventListener('click', (e) => {
+            if (e.target === forgotModal) {
+                forgotModal.style.display = 'none';
+            }
         });
     </script>
-
 </body>
 
 </html>

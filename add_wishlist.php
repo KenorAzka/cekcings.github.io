@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     </style>
@@ -205,15 +206,72 @@
         }
 
         /* Responsive Mobile Layout */
-        @media (max-width: 768px) {
+        @media screen and (max-width: 768px) {
             .split-container {
-                flex-direction: column;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 20px !important;
+                padding: 10px 16px 30px 16px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .preview-panel,
+            .form-panel {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
             }
 
             .preview-panel {
-                border-right: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 30px;
+                display: flex !important;
+                justify-content: center !important;
+            }
+
+            .image-preview-frame {
+                width: 100% !important;
+                max-width: 350px !important;
+                height: 220px !important;
+            }
+
+            .form-panel h2 {
+                font-size: 1.5rem !important;
+            }
+
+            .form-panel p {
+                font-size: 0.85rem !important;
+                margin-bottom: 20px !important;
+            }
+
+            .input-group style {
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+
+            .target {
+                flex-direction: column !important;
+                gap: 12px !important;
+            }
+
+            #target_mingguan,
+            #tipe_alokasi {
+                width: 100% !important;
+                flex: none !important;
+                box-sizing: border-box !important;
+            }
+
+            .action-buttons {
+                flex-direction: column-reverse !important;
+                gap: 10px !important;
+                margin-top: 25px !important;
+            }
+
+            .btn {
+                width: 100% !important;
+                text-align: center !important;
+                padding: 12px !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
             }
         }
     </style>
@@ -255,7 +313,7 @@
 
                 <div class="input-group">
                     <label for="target_mingguan">Target Alokasi Tabungan</label>
-                    <div style="display: flex; gap: 10px;">
+                    <div class="target" style="display: flex; gap: 10px;">
                         <input type="text" name="target_mingguan" id="target_mingguan" placeholder="Contoh: 250.000" oninput="formatRupiah(this)" required style="flex: 2; padding: 12px 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); outline: none; font-size: 0.95rem; color: #333; background: white;">
 
                         <select name="tipe_alokasi" id="tipe_alokasi" required style="flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2); font-family: 'Poppins'; background: white; color: #333; font-weight: 500; outline: none;">

@@ -25,8 +25,8 @@ $foto_sekarang = $user['foto_profil'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -209,6 +209,70 @@ $foto_sekarang = $user['foto_profil'];
             background-color: #ffebee;
             color: #c62828;
             border: 1px solid #ffcdd2;
+        }
+
+        @media screen and (max-width: 768px) {
+            .profile-main {
+                padding: 80px 16px 30px 16px !important;
+                align-items: flex-start !important;
+            }
+
+            .profile-card {
+                padding: 24px 20px !important;
+                border-radius: 16px !important;
+            }
+
+            .profile-card h2 {
+                font-size: 1.5rem !important;
+            }
+
+            .profile-card .subtitle {
+                font-size: 0.85rem !important;
+                margin-bottom: 20px !important;
+            }
+
+            .avatar-preview {
+                width: 100px !important;
+                height: 100px !important;
+            }
+
+            .form-group {
+                margin-bottom: 15px !important;
+            }
+
+            .form-group input {
+                padding: 10px 12px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .profile-actions {
+                flex-direction: column-reverse !important;
+                gap: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .btn-cancel,
+            .btn-save {
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 12px !important;
+            }
+
+            .navbar {
+                padding: 10px 16px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+            }
+
+            .nav-links {
+                gap: 15px !important;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem !important;
+            }
         }
     </style>
 </head>

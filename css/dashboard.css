@@ -1036,3 +1036,359 @@ background-color: #e0e0e0;
     font-size: 1em;
     margin-top: 4rem;
 }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MEDIA QUERY UNTUK TABLET & HP)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    /* 1. Reset container utama flex/grid desktop menjadi susunan vertikal */
+    .dashboard-container {
+        display: block !important;
+        position: relative !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    .welcome-text p {
+        display: none;
+    }
+
+    .header-right button {
+        display: none;
+    }
+
+    /* 2. Tombol Hamburger Menu */
+    .sidebar-toggle {
+        display: block !important;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 10000 !important;
+        background: #124170;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    .sidebar {
+        position: fixed !important;
+        top: 0;
+        left: -100% !important; 
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        transition: left 0.3s ease-in-out !important;
+        float: none !important;
+        margin: 0 !important;
+        background: rgba(255, 255, 255, 0.15) !important; 
+        backdrop-filter: blur(12px) saturate(180%) !important; 
+        -webkit-backdrop-filter: blur(12px) saturate(180%) !important; 
+        border-right: 1px solid rgba(255, 255, 255, 0.2) !important; 
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important; 
+    }
+
+    /* Memunculkan sidebar saat berkelas .sidebar-open */
+    .sidebar.sidebar-open {
+        left: 0 !important; 
+    }
+
+    .profile-box {
+        background-color: white !important;
+    }
+
+    .profile-box:hover {
+        background-color: #f0f0f0 !important;
+    }
+
+    .profile-box i {
+        color: #124170 !important;
+    }
+
+    .profile-info .profile-name, .profile-email {
+        color: #124170 !important;
+    }
+
+    /* 4. Perbaikan Utama: Memaksa Konten Mengisi Penuh Layar HP */
+    .main-dashboard {
+        margin-left: 0 !important; /* Menghapus jarak kosong 250px bawaan desktop */
+        padding: 80px 20px 20px 20px !important; /* Beri ruang di atas agar tidak tertutup tombol hamburger */
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Tetap sembunyikan semua section batiniah kecuali yang aktif */
+    .content-section {
+        display: none !important;
+        width: 100% !important;
+    }
+
+    .content-section.section-active {
+        display: block !important;
+    }
+
+    .summary-cards-container {
+        display: flex !important;
+        flex-direction: row !important; /* Paksa tetap sejajar ke samping di HP */
+        gap: 12px !important;
+        width: 100% !important;
+        
+        /* Aktifkan fitur scroll horizontal */
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding-bottom: 5px !important;
+        
+        /* Efek magnet saat di-scroll manual */
+        scroll-snap-type: x mandatory !important;
+        scroll-behavior: smooth !important; /* Mulus saat bergeser secara otomatis */
+        -webkit-overflow-scrolling: touch !important;
+
+        /* Sembunyikan scrollbar bawaan */
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+    }
+
+    /* Sembunyikan scrollbar Chrome, Safari, Opera */
+    .summary-cards-container::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .summary-card {
+        flex-shrink: 0 !important; /* Kunci ukuran agar tidak menciut */
+        width: 85% !important; /* Sengaja dibuat 85% agar kartu berikutnya sedikit mengintip */
+        max-width: 290px !important;
+        box-sizing: border-box !important;
+        scroll-snap-align: start !important; /* Magnet penyeimbang posisi kartu */
+    }
+    /* 4. Ubah Grid 2 Kolom (Kiri & Kanan) Menjadi 1 Kolom Tunggal */
+    .dashboard-grid-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+    }
+
+    /* Paksa kolom kiri dan kanan mengambil porsi lebar penuh */
+    .left-column, .right-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+.horizontal-wishlist-flex {
+        display: flex !important;
+        flex-direction: row !important; /* Paksa tetap berjejer ke samping */
+        gap: 16px !important;
+        
+        /* Aktifkan scroll horizontal */
+        overflow-x: auto !important; 
+        overflow-y: hidden !important;
+        padding-bottom: 8px !important; /* Beri sedikit ruang di bawah card */
+        
+        /* Efek iOS-like magnet scroll (Optional tapi estetik) */
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important; /* Scroll halus di iOS */
+
+        /* Sembunyikan scrollbar bawaan agar minimalis */
+        -ms-overflow-style: none !important;  /* IE/Edge */
+        scrollbar-width: none !important;  /* Firefox */
+    }
+
+    /* Sembunyikan scrollbar untuk Chrome, Safari, dan Opera */
+    .horizontal-wishlist-flex::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .wishlist-card {
+        /* Gunakan flex-shrink agar card tidak gepeng/menciut */
+        flex-shrink: 0 !important; 
+        
+        /* Di HP, idealnya ukuran card diseting 80% - 85% dari lebar layar 
+           agar card di sebelahnya kelihatan sedikit mengintip (pemicu visual kalau ini bisa digeser) */
+        width: 85% !important; 
+        max-width: 300px !important;
+        box-sizing: border-box !important;
+        
+        /* Pasangan dari scroll-snap-type di atas */
+        scroll-snap-align: start !important; 
+    }
+
+    /* Sesuaikan ukuran gambar card di HP */
+    .wishlist-card img {
+        width: 100% !important;
+        height: 160px !important;
+        object-fit: cover !important;
+        border-radius: 8px !important;
+    }
+
+    /* WISHLIST GRID SECTION KHUSUS HP */
+#wishlist-section {
+        height: calc(100vh - 80px) !important; /* Kurangi padding atas main-dashboard */
+        box-sizing: border-box !important;
+        overflow: hidden !important; /* Kunci scroll global */
+    }
+
+    /* 2. HANYA berikan display FLEX saat section ini benar-benar AKTIF (.section-active) */
+    #wishlist-section.section-active {
+        display: flex !important; 
+        flex-direction: column !important;
+    }
+
+    /* 3. Sediakan area header tetap di atas */
+    .wishlist-header {
+        flex-shrink: 0 !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* 4. Buat area Grid Card bisa di-scroll ke bawah secara mandiri */
+    .wishlist-grid {
+        flex-grow: 1 !important;
+        overflow-y: auto !important; /* Izinkan scroll ke bawah hanya di area grid */
+        overflow-x: hidden !important;
+        padding-bottom: 20px !important;
+        
+        /* Dukungan scroll mulus untuk iOS */
+        -webkit-overflow-scrolling: touch !important;
+
+        /* Hilangkan scrollbar bawaan untuk Firefox & IE */
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+        
+        /* Paksa susunan card menjadi 1 kolom rapi ke bawah di HP */
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    /* Hilangkan scrollbar untuk Chrome, Safari, dan Opera */
+    .wishlist-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    /* 5. Pastikan komponen link dan card mengambil lebar penuh */
+    .wishlist-grid a, 
+    .wishlist-grid .wishlist-card {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* COMPLETED SECTION */
+    #completed-section {
+        height: calc(100vh - 80px) !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    #completed-section.section-active {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #completed-section p{
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+    }
+
+    #completed-section .wishlist-grid {
+        flex-grow: 1 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-bottom: 20px !important;
+        -webkit-overflow-scrolling: touch !important;
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    #completed-section .wishlist-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    #completed-section .wishlist-grid a,
+    #completed-section .wishlist-card {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /*REMINDER SECTION */
+    #pengingat-section {
+        height: calc(100vh - 80px) !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    #pengingat-section.section-active {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #pengingat-section .reminder-prof-header {
+        flex-shrink: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 10px !important;
+        margin-bottom: 15px !important;
+        width: 100% !important;
+    }
+
+    #pengingat-section .reminder-prof-header h2 {
+        font-size: 1.4rem !important;
+        margin: 0 !important;
+    }
+
+    #pengingat-section .header-subtitle {
+        display: none !important;
+    }
+
+    #pengingat-section .add-savings-btn {
+        padding: 8px 12px !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    #pengingat-section .reminder-prof-grid {
+        flex-grow: 1 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-bottom: 20px !important;
+        -webkit-overflow-scrolling: touch !important;
+        -ms-overflow-style: none !important;  
+        scrollbar-width: none !important;  
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    #pengingat-section .reminder-prof-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    #pengingat-section .prof-reminder-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    #pengingat-section .prof-card-actions {
+        height: 36px !important;
+    }
+
+}
+
+/* Tampilan Desktop (Sembunyikan tombol hamburger secara default) */
+@media screen and (min-width: 769px) {
+    .sidebar-toggle {
+        display: none;
+    }
+}

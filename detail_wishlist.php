@@ -62,7 +62,9 @@ $history_result = mysqli_query($conn, $query_history);
 <head>
     <meta charset="UTF-8">
     <title>CekC!ng</title>
-    <link rel="stylesheet" href="dashboard_style.css">
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -288,6 +290,235 @@ $history_result = mysqli_query($conn, $query_history);
             cursor: pointer;
             font-weight: 600;
         }
+
+        @media screen and (max-width: 768px) {
+
+            body,
+            html {
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+            }
+
+            .dashboard-container,
+            #pengingat-section,
+            #completed-section {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                overflow-x: hidden !important;
+                box-sizing: border-box !important;
+            }
+
+            .sidebar {
+                display: none !important;
+            }
+
+            .main-dashboard,
+            .detail-wrapper,
+            .split-container {
+                width: 100% !important;
+                padding: 80px 16px 30px 16px !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .dashboard-stats-grid,
+            .reminder-prof-header,
+            .top-action-bar {
+                display: flex !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+                width: 100% !important;
+            }
+
+            .reminder-prof-header h2,
+            .top-action-bar h2,
+            .form-panel h2 {
+                font-size: 1.5rem !important;
+                margin: 0 !important;
+                line-height: 1.3 !important;
+            }
+
+            .header-subtitle,
+            .subtitle,
+            .form-panel p {
+                display: none !important;
+            }
+
+            .add-savings-btn {
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 8px !important;
+                padding: 10px 16px !important;
+                font-size: 0.9rem !important;
+                white-space: nowrap !important;
+                width: auto !important;
+                box-sizing: border-box !important;
+            }
+
+            .wishlist-grid,
+            .reminder-prof-grid,
+            .detail-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                box-sizing: border-box !important;
+            }
+
+            .preview-panel,
+            .form-panel,
+            .left-card,
+            .right-section,
+            .prof-reminder-card,
+            .wishlist-card,
+            .main-dashboard .card,
+            .main-dashboard div[style*="width: 32%"] {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-bottom: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .preview-panel {
+                display: flex !important;
+                justify-content: center !important;
+            }
+
+            .image-preview-frame {
+                width: 100% !important;
+                max-width: 350px !important;
+                height: 220px !important;
+            }
+
+            .left-card img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 250px !important;
+                object-fit: cover !important;
+            }
+
+            #target_mingguan,
+            #tipe_alokasi,
+            .transaction-form select,
+            .transaction-form input[type="text"],
+            .transaction-form .btn-submit-trans {
+                width: 100% !important;
+                flex: none !important;
+                box-sizing: border-box !important;
+            }
+
+            .transaction-form .form-row {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+
+            .info-strip {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 12px !important;
+                text-align: left !important;
+            }
+
+            .info-strip div:last-child {
+                text-align: left !important;
+            }
+
+            .info-strip.split {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+                text-align: center !important;
+            }
+
+            .info-strip.split div:last-child {
+                text-align: center !important;
+                border-left: 1px solid rgba(255, 255, 255, 0.2) !important;
+            }
+
+            .prof-card-actions {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                gap: 10px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                margin-top: 15px !important;
+            }
+
+            .prof-btn-toggle {
+                flex-grow: 1 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 8px !important;
+                padding: 12px !important;
+                font-size: 0.95rem !important;
+                white-space: nowrap !important;
+                box-sizing: border-box !important;
+            }
+
+            .prof-btn-delete {
+                flex-shrink: 0 !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                width: 45px !important;
+                height: 45px !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .action-buttons,
+            .profile-actions {
+                flex-direction: column-reverse !important;
+                gap: 10px !important;
+                margin-top: 20px !important;
+            }
+
+            .btn,
+            .btn-cancel,
+            .btn-save {
+                width: 100% !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 12px !important;
+                margin: 0 !important;
+            }
+
+            .history-item {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 4px !important;
+                padding: 10px 0 !important;
+            }
+
+            .history-item span:last-child {
+                align-self: flex-end !important;
+            }
+
+            .navbar {
+                padding: 10px 16px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+            }
+
+            .nav-links {
+                gap: 15px !important;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -341,7 +572,7 @@ $history_result = mysqli_query($conn, $query_history);
                 </div>
 
                 <div class="transaction-form">
-                    <h4>Catat Mutasi Tabungan</h4>
+                    <h4>Catat Tabungan</h4>
                     <form action="proses/proses_transaksi_saving.php" method="POST">
                         <input type="hidden" name="id_wishlist" value="<?php echo $id_wishlist; ?>">
                         <div class="form-row">

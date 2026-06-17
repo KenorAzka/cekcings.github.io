@@ -20,6 +20,7 @@ $tampil_opt = mysqli_query($conn, $query_opt);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CekC!ng</title>
+    <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -119,6 +120,61 @@ $tampil_opt = mysqli_query($conn, $query_opt);
 
         .btn-cancel:hover {
             background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media screen and (max-width: 768px) {
+            .form-container {
+                width: 90% !important;
+                max-width: 100% !important;
+                padding: 24px 16px !important;
+                box-sizing: border-box !important;
+                border-radius: 16px !important;
+            }
+
+            .form-container h2 {
+                font-size: 1.4rem !important;
+            }
+
+            .form-container p {
+                font-size: 0.8rem !important;
+                margin-bottom: 20px !important;
+            }
+
+            .form-group {
+                margin-bottom: 15px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .form-group label {
+                font-size: 0.85rem !important;
+            }
+
+            .form-group select,
+            .form-group input[type="time"] {
+                width: 100% !important;
+                padding: 12px !important;
+                font-size: 0.95rem !important;
+                box-sizing: border-box !important;
+            }
+
+            .btn-group {
+                display: flex !important;
+                flex-direction: column-reverse !important;
+                gap: 10px !important;
+                margin-top: 25px !important;
+                width: 100% !important;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100% !important;
+                text-align: center !important;
+                padding: 12px !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                font-size: 0.95rem !important;
+            }
         }
     </style>
 </head>
